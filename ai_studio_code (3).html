@@ -1,0 +1,1836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkuShot - 15 Slide Master Presentation</title>
+    <link rel="icon" type="image/png" href="images/image%20224.png">
+    <link rel="apple-touch-icon" href="images/image%20224.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gold: #FFB800;
+            --bg: #0b0d11;
+            --text: #ffffff;
+            --sub: #a0a5ba;
+            --success: #2ed573;
+            /* Projector / slide deck design canvas (16:9) — entire UI scales from this */
+            --stage-w: 1920;
+            --stage-h: 1080;
+            --proj-dots-reserve: 52px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        html { -webkit-text-size-adjust: 100%; }
+        body {
+            background-color: #000;
+            overflow: hidden;
+            color: var(--text);
+            cursor: pointer;
+            min-height: 100dvh;
+        }
+
+        /* Viewport centers the scaled slide canvas (projector / large screens) */
+        .presentation-viewport {
+            width: 100%;
+            min-height: 100dvh;
+            height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            overflow: hidden;
+        }
+        .presentation-scale-wrap {
+            position: relative;
+            flex-shrink: 0;
+            overflow: hidden;
+            line-height: 0;
+        }
+        /* Fixed design resolution; JS applies transform: scale() to fit any screen */
+        .presentation-stage {
+            container-type: size;
+            container-name: stage;
+            position: relative;
+            transform-origin: top left;
+            line-height: normal;
+        }
+        body:not(.projection-mode) .presentation-viewport {
+            display: block;
+            height: auto;
+            min-height: 100dvh;
+        }
+        body:not(.projection-mode) .presentation-scale-wrap {
+            width: 100% !important;
+            height: auto !important;
+            min-height: 100dvh;
+            overflow: visible;
+        }
+        body:not(.projection-mode) .presentation-stage {
+            width: 100%;
+            min-height: 100dvh;
+            height: auto;
+            transform: none !important;
+        }
+
+        .presentation-container {
+            width: 100%;
+            max-width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        body.projection-mode .presentation-container {
+            height: calc(var(--stage-h) * 1px);
+            min-height: calc(var(--stage-h) * 1px);
+        }
+        body:not(.projection-mode) .presentation-container {
+            min-height: 100dvh;
+            height: 100dvh;
+            max-width: 100vw;
+        }
+
+        /* Slide Transition Logic */
+        .slide {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--bg); display: flex; align-items: center;
+            padding: 0 clamp(16px, 5cqw, 8%);
+            gap: clamp(12px, 3cqw, 28px);
+            opacity: 0; visibility: hidden;
+            transition: all 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+            transform: scale(1.05); z-index: 1;
+            overflow: hidden;
+        }
+        .slide.active { opacity: 1; visibility: visible; transform: scale(1); z-index: 10; }
+
+        /* Global Elements Styles */
+        .glow { position: absolute; border-radius: 50%; filter: blur(180px); opacity: 0.3; z-index: 1; }
+        .text-content {
+            width: 55%;
+            min-width: 0;
+            flex: 1 1 48%;
+            z-index: 10;
+        }
+        .visual-content {
+            width: 45%;
+            min-width: 0;
+            flex: 1 1 45%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+        .visual-content--marketplaces {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .slide-number {
+            font-size: clamp(14px, 2.2cqw, 24px);
+            color: var(--gold);
+            font-weight: 800;
+            margin-bottom: clamp(12px, 2cqw, 20px);
+            letter-spacing: clamp(2px, 0.35cqw, 4px);
+            text-transform: uppercase;
+        }
+        .main-heading {
+            font-size: clamp(1.75rem, 5cqw + 0.5rem, 5.625rem);
+            font-weight: 900;
+            line-height: 1.05;
+            margin-bottom: clamp(16px, 2.5cqw, 30px);
+            letter-spacing: clamp(-2px, -0.2cqw, -3px);
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        .sub-heading {
+            font-size: clamp(1rem, 1.8cqw + 0.4rem, 2.125rem);
+            color: var(--sub);
+            font-weight: 500;
+            line-height: 1.4;
+            max-width: 100%;
+        }
+        .highlight { color: var(--gold); }
+
+        /* Visual Components */
+        .phone {
+            width: min(320px, 78cqw);
+            height: auto;
+            aspect-ratio: 320 / 650;
+            max-height: min(650px, 72cqh);
+            background: #181a20;
+            border-radius: clamp(28px, 8cqw, 50px);
+            border: clamp(6px, 1.2cqw, 12px) solid #262a34;
+            box-shadow: -30px 40px 80px rgba(0,0,0,0.8);
+            overflow: hidden;
+            transform: perspective(1000px) rotateY(-15deg);
+        }
+        .phone img { width: 100%; height: 100%; object-fit: cover; }
+        /* Slide 1 hero: full device PNG (includes bezel) — use project images/, no extra crop */
+        .phone--slide1-mockup {
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            overflow: visible;
+            aspect-ratio: auto;
+            width: min(400px, 88cqw);
+            max-height: min(78cqh, 760px);
+            height: auto;
+            transform: perspective(1000px) rotateY(-15deg);
+            filter: drop-shadow(-24px 36px 56px rgba(0, 0, 0, 0.72));
+        }
+        .phone--slide1-mockup img {
+            width: 100%;
+            height: auto;
+            max-height: min(78cqh, 760px);
+            object-fit: contain;
+            object-position: center bottom;
+            display: block;
+        }
+
+        .float-badge {
+            position: absolute;
+            background: rgba(25, 27, 33, 0.95);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 184, 0, 0.3);
+            padding: clamp(14px, 2.5cqw, 25px) clamp(18px, 3.5cqw, 35px);
+            border-radius: clamp(18px, 4cqw, 35px);
+            display: flex;
+            align-items: center;
+            gap: clamp(10px, 2cqw, 20px);
+            z-index: 25;
+            animation: float 4s ease-in-out infinite;
+            max-width: min(340px, 88cqw);
+        }
+        /* Slide 4 — "1 Click Transformation": higher than default so it clears the phone */
+        .float-badge--slide4 {
+            bottom: clamp(200px, 26cqh, 300px);
+            left: -50px;
+        }
+        @media (max-width: 900px) {
+            .float-badge--slide4 {
+                left: 8px;
+                bottom: clamp(130px, 32cqh, 260px);
+            }
+        }
+        .float-badge--icon {
+            width: 68px;
+            height: 68px;
+            padding: 0;
+            border-radius: 50%;
+            justify-content: center;
+            align-items: center;
+            border-color: rgba(255, 184, 0, 0.45);
+        }
+        .float-badge--icon i {
+            font-size: 28px;
+            color: #fff;
+        }
+        .float-badge--store {
+            padding: 30px 44px;
+            gap: 22px;
+            border-radius: 40px;
+            animation: none;
+        }
+        .float-badge--store i {
+            font-size: 46px;
+            color: #fff;
+            line-height: 1;
+        }
+        .float-badge--store h4 {
+            font-size: 30px;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: 0.4px;
+            color: #fff;
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
+        /* Specific Visual Elements for Different Slides */
+        .compare-box {
+            width: min(550px, 92cqw);
+            max-width: 100%;
+            height: auto;
+            aspect-ratio: 1;
+            border-radius: clamp(16px, 3cqw, 30px);
+            overflow: hidden;
+            position: relative;
+            border: clamp(4px, 1cqw, 8px) solid #262a34;
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+        }
+        .compare-panel {
+            flex: 1 1 50%;
+            min-width: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .compare-panel img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+        .compare-panel--before { border-right: 4px solid #fff; }
+        .compare-label {
+            position: absolute;
+            bottom: 20px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            z-index: 5;
+            pointer-events: none;
+        }
+        .compare-label--before {
+            left: 20px;
+            background: #ff4757;
+            color: #fff;
+        }
+        .compare-label--after {
+            right: 20px;
+            background: #2ed573;
+            color: #fff;
+        }
+        .scan-bar { position: absolute; left: 0; width: 100%; height: 8px; background: var(--gold); box-shadow: 0 0 30px var(--gold); animation: scan 3s linear infinite; z-index: 20; }
+        @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
+
+        /* Progress Dots */
+        .progress-dots {
+            position: fixed;
+            bottom: max(16px, env(safe-area-inset-bottom, 0px));
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: clamp(6px, 1.5vw, 10px);
+            z-index: 100;
+            max-width: calc(100vw - 24px);
+            padding: 0 8px;
+        }
+        .dot {
+            width: clamp(8px, 1.8vw, 10px);
+            height: clamp(8px, 1.8vw, 10px);
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transition: 0.3s;
+            flex-shrink: 0;
+        }
+        .dot.active { background: var(--gold); width: clamp(22px, 6vw, 30px); border-radius: 10px; }
+
+        /* Grid for Slide 12 */
+        .visual-grid {
+            position: relative;
+            width: min(600px, 88cqw);
+            height: auto;
+            aspect-ratio: 1;
+            max-height: min(600px, 75cqh);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .mini-card {
+            width: clamp(100px, 28cqw, 180px);
+            height: clamp(140px, 38cqw, 250px);
+            border-radius: clamp(12px, 2.5cqw, 20px);
+            position: absolute;
+            border: 3px solid var(--gold);
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        .mini-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+        .raw-shot {
+            position: relative;
+            width: clamp(120px, 32cqw, 200px);
+            height: clamp(120px, 32cqw, 200px);
+            border-radius: 50%;
+            overflow: hidden;
+            z-index: 50;
+            border: clamp(4px, 1.2cqw, 8px) solid var(--gold);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.55);
+        }
+        .raw-shot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: 56% 42%;
+            display: block;
+        }
+        .raw-shot-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 10px 8px 12px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.82));
+            color: #fff;
+            font-weight: 900;
+            font-size: 13px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+        .qr-box {
+            margin-top: 35px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 184, 0, 0.35);
+            border-radius: 24px;
+            padding: 20px 24px;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            backdrop-filter: blur(10px);
+        }
+        .qr-box img {
+            width: min(190px, 52cqw);
+            height: auto;
+            aspect-ratio: 1;
+            border-radius: 14px;
+            background: #fff;
+            padding: 8px;
+        }
+        .qr-box p {
+            color: var(--sub);
+            font-size: clamp(14px, 2.2cqw, 18px);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+        .qr-box--hero {
+            margin-top: 48px;
+            padding: 32px 40px 36px;
+            border: 3px solid rgba(255, 184, 0, 0.75);
+            border-radius: 28px;
+            background: rgba(255, 184, 0, 0.06);
+            box-shadow:
+                0 0 0 1px rgba(255, 184, 0, 0.2),
+                0 0 48px rgba(255, 184, 0, 0.35),
+                0 0 100px rgba(255, 184, 0, 0.12),
+                inset 0 0 60px rgba(255, 184, 0, 0.04);
+            gap: 18px;
+        }
+        .qr-box--hero img {
+            width: min(280px, 70cqw);
+            height: auto;
+            aspect-ratio: 1;
+            border-radius: 18px;
+            padding: 12px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+        }
+        .qr-box--hero p {
+            font-size: clamp(16px, 2.8cqw, 22px);
+            color: #e8eaf0;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+        .brand-logo-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            padding: 10px 16px 10px 10px;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 184, 0, 0.45);
+            background: rgba(10, 12, 16, 0.7);
+            backdrop-filter: blur(10px);
+            margin-bottom: 24px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+        }
+        .brand-logo-badge img {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: block;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+        }
+        .brand-logo-badge span {
+            color: #fff;
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+        }
+        /* Final slide: match hero — logo badge clearly top-center above headline */
+        .slide--final-cta {
+            text-align: center;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            background: radial-gradient(circle, #1a1500 0%, #000 100%);
+        }
+        .slide-final-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: min(920px, 100%);
+            padding: clamp(12px, 2cqh, 28px) 0;
+        }
+        .brand-logo-badge--final {
+            margin-bottom: clamp(20px, 3.5cqh, 32px);
+            border-color: rgba(255, 184, 0, 0.55);
+            box-shadow:
+                0 16px 40px rgba(0, 0, 0, 0.35),
+                0 0 0 1px rgba(255, 184, 0, 0.12),
+                0 0 32px rgba(255, 184, 0, 0.15);
+        }
+        .brand-logo-badge--final img {
+            width: clamp(44px, 5cqw, 52px);
+            height: clamp(44px, 5cqw, 52px);
+        }
+        .brand-logo-badge--final span {
+            font-size: clamp(18px, 2.2cqw, 22px);
+        }
+        .slide-final-stores {
+            display: flex;
+            gap: clamp(24px, 4cqw, 36px);
+            justify-content: center;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        /* Slide 02: AI synthesis phone (from SkuShot 4s demo) */
+        .slide-02-ai-phone-outer {
+            perspective: 1100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .slide-02-ai-phone {
+            transform: rotateY(-14deg) scale(0.88);
+            transform-style: preserve-3d;
+            filter: drop-shadow(-22px 36px 48px rgba(0, 0, 0, 0.75));
+        }
+        .slide-02-ai-phone .phone-frame {
+            width: 380px;
+            height: 820px;
+            background: #020202;
+            border-radius: 60px;
+            border: 12px solid #1a1a1a;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 120px rgba(255, 184, 0, 0.2);
+        }
+        .slide-02-ai-phone .synthesis-canvas {
+            width: 90%;
+            height: 520px;
+            margin: 80px auto 20px;
+            border-radius: 35px;
+            background: #080808;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 184, 0, 0.1);
+        }
+        .slide-02-ai-phone .img-layer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 1s ease;
+        }
+        .slide-02-ai-phone .img-raw { z-index: 1; filter: saturate(0.5) contrast(0.8); }
+        .slide-02-ai-phone .img-result {
+            z-index: 2;
+            opacity: 0;
+            transform: scale(1.1);
+            filter: brightness(1.5) blur(10px);
+        }
+        .slide-02-ai-phone .scan-line {
+            position: absolute;
+            width: 100%;
+            height: 10px;
+            background: #FFB800;
+            box-shadow: 0 0 40px #FFB800, 0 0 80px #FFB800;
+            top: -10%;
+            left: 0;
+            z-index: 100;
+            display: none;
+        }
+        .slide-02-ai-phone .hud-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 50;
+            display: none;
+            padding: 25px;
+            pointer-events: none;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        .slide-02-ai-phone .data-line {
+            color: #FFB800;
+            font-size: 10px;
+            margin-bottom: 5px;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        .slide-02-ai-phone .energy-wave {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, #FFB800 0%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0;
+            z-index: 80;
+        }
+        .slide-02-ai-phone .flash-white {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 200;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .slide-02-ai-phone .bottom-panel {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding: 40px 30px;
+            background: linear-gradient(to top, #000 90%, transparent);
+            text-align: center;
+            z-index: 100;
+        }
+        .slide-02-ai-phone .btn-magic {
+            width: 100%;
+            padding: 22px;
+            background: #FFB800;
+            color: #000;
+            border-radius: 25px;
+            border: none;
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            cursor: pointer;
+            box-shadow: 0 15px 40px rgba(255, 184, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            transition: background 0.3s, opacity 0.3s, filter 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .slide-02-ai-phone .btn-magic:not(:disabled) {
+            animation: slide02-magic-pulse 2.1s ease-in-out infinite;
+        }
+        .slide-02-ai-phone .btn-magic:not(:disabled)::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -80%;
+            width: 55%;
+            height: 100%;
+            background: linear-gradient(
+                100deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.55) 45%,
+                rgba(255, 255, 255, 0.2) 55%,
+                transparent 100%
+            );
+            animation: slide02-magic-shine 2.8s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .slide-02-ai-phone .btn-magic > * {
+            position: relative;
+            z-index: 1;
+        }
+        .slide-02-ai-phone .btn-magic:not(:disabled):hover {
+            filter: brightness(1.06);
+        }
+        .slide-02-ai-phone .slide02-tap-cue {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            width: max-content;
+            margin: 2px auto 10px;
+            color: #ffb800;
+            line-height: 1;
+            filter: drop-shadow(0 3px 10px rgba(255, 184, 0, 0.45));
+            pointer-events: none;
+            animation: slide02-tap-bob 1.15s ease-in-out infinite;
+        }
+        .slide-02-ai-phone .slide02-tap-cue .slide02-tap-hand {
+            font-size: 32px;
+        }
+        .slide-02-ai-phone .slide02-tap-cue .slide02-tap-cue-arrow {
+            font-size: 14px;
+            opacity: 0.88;
+            margin-top: -2px;
+        }
+        .slide-02-ai-phone .bottom-panel:has(.btn-magic:disabled) .slide02-tap-cue {
+            display: none;
+        }
+        @keyframes slide02-tap-bob {
+            0%, 100% { transform: translateY(0); opacity: 0.95; }
+            50% { transform: translateY(7px); opacity: 1; }
+        }
+        @keyframes slide02-magic-pulse {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+                box-shadow:
+                    0 15px 40px rgba(255, 184, 0, 0.38),
+                    0 0 0 0 rgba(255, 184, 0, 0.35);
+            }
+            50% {
+                transform: translateY(-4px) scale(1.04);
+                box-shadow:
+                    0 22px 52px rgba(255, 184, 0, 0.55),
+                    0 0 36px rgba(255, 184, 0, 0.4);
+            }
+        }
+        @keyframes slide02-magic-shine {
+            0%, 12% { transform: translateX(0) skewX(-12deg); opacity: 0; }
+            18% { opacity: 1; }
+            45%, 100% { transform: translateX(340%) skewX(-12deg); opacity: 0; }
+        }
+        .slide-02-ai-phone .synthesis-canvas.anim-active .scan-line {
+            display: block;
+            animation: slide02-scanning 2s ease-in-out infinite;
+        }
+        @keyframes slide02-scanning {
+            0%, 100% { top: 0%; }
+            50% { top: 95%; }
+        }
+        .slide-02-ai-phone .synthesis-canvas.anim-active .data-line {
+            animation: slide02-dataReveal 0.5s forwards;
+        }
+        @keyframes slide02-dataReveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .slide-02-ai-phone .synthesis-canvas.trigger-synthesis .energy-wave {
+            animation: slide02-synthesize 1s forwards;
+        }
+        @keyframes slide02-synthesize {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+        }
+        .slide-02-ai-phone .flash-white.trigger-flash {
+            animation: slide02-finalFlash 0.5s forwards;
+        }
+        @keyframes slide02-finalFlash {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* Slide 09: Brand sync phone (Ultra Brand Sync demo) */
+        .slide-09-brand-outer {
+            perspective: 1100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            --slide9-primary: #FFB800;
+            --slide9-bg: #0b0d11;
+            --slide9-card: #181a20;
+            --slide9-success: #2ed573;
+        }
+        .slide-09-brand-tilt {
+            transform: rotateY(-14deg) scale(0.82);
+            transform-style: preserve-3d;
+            filter: drop-shadow(-20px 34px 46px rgba(0, 0, 0, 0.72));
+        }
+        .slide-09-brand-phone {
+            width: 375px;
+            height: 812px;
+            background: var(--slide9-bg);
+            border-radius: 50px;
+            border: 8px solid #1a1a1a;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 100px rgba(255, 184, 0, 0.15);
+        }
+        .slide-09-brand-phone .bg-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(255, 184, 0, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: 1;
+        }
+        .slide-09-brand-phone .screen {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            padding: 60px 25px;
+            transition: all 0.8s cubic-bezier(0.7, 0, 0.3, 1);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+        }
+        .slide-09-brand-phone .header { margin-bottom: 30px; }
+        .slide-09-brand-phone .header h2 {
+            color: white;
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        .slide-09-brand-phone .header p {
+            color: #a0a5ba;
+            font-size: 14px;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+        .slide-09-brand-phone #slide9S1 { left: 0; opacity: 1; }
+        .slide-09-brand-phone #slide9S2 { left: 100%; opacity: 0; }
+        .slide-09-brand-phone .logo-core-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .slide-09-brand-phone .logo-orb {
+            width: 180px;
+            height: 180px;
+            background: rgba(255, 184, 0, 0.1);
+            border-radius: 45px;
+            border: 2px solid var(--slide9-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 184, 0, 0.2);
+            animation: slide09-logoFloat 4s ease-in-out infinite;
+            position: relative;
+        }
+        .slide-09-brand-phone .logo-preview-box {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        .slide-09-brand-phone .logo-preview-box i { font-size: 45px; color: #000; }
+        @keyframes slide09-logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        .slide-09-brand-phone #slide9Processing {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 100;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .slide-09-brand-phone .scanner-line {
+            width: 80%;
+            height: 4px;
+            background: var(--slide9-primary);
+            box-shadow: 0 0 20px var(--slide9-primary);
+            position: absolute;
+            animation: slide09-scan 2s linear infinite;
+        }
+        @keyframes slide09-scan {
+            0% { top: 20%; }
+            100% { top: 80%; }
+        }
+        .slide-09-brand-phone .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            flex: 1;
+            margin-top: 10px;
+        }
+        .slide-09-brand-phone .product-card {
+            background: var(--slide9-card);
+            border-radius: 25px;
+            height: 190px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transform: scale(0.8);
+            opacity: 0;
+            transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .slide-09-brand-phone .product-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+        }
+        .slide-09-brand-phone .watermark {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            width: 30px;
+            height: 30px;
+            background: white;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.5) rotate(-45deg);
+            transition: 0.5s 0.8s ease-out;
+        }
+        .slide-09-brand-phone .watermark i { font-size: 15px; color: #000; }
+        .slide-09-brand-phone .btn-container {
+            padding-bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .slide-09-brand-phone .slide9-tap-cue {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 14px;
+            color: var(--slide9-primary);
+            font-size: 30px;
+            line-height: 1;
+            filter: drop-shadow(0 3px 10px rgba(255, 184, 0, 0.45));
+            pointer-events: none;
+            animation: slide9-tap-bob 1.15s ease-in-out infinite;
+        }
+        .slide-09-brand-phone .slide9-tap-cue i {
+            transform: rotate(-8deg);
+        }
+        @keyframes slide9-tap-bob {
+            0%, 100% { transform: translateY(0); opacity: 0.95; }
+            50% { transform: translateY(7px); opacity: 1; }
+        }
+        .slide-09-brand-phone.active-sync .slide9-tap-cue {
+            display: none;
+        }
+        .slide-09-brand-phone .btn-main {
+            width: 100%;
+            padding: 22px;
+            background: var(--slide9-primary);
+            color: #000;
+            border-radius: 22px;
+            font-weight: 900;
+            font-size: 16px;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 15px 30px rgba(255, 184, 0, 0.3);
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background 0.3s, opacity 0.3s, filter 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .slide-09-brand-phone .btn-main > * {
+            position: relative;
+            z-index: 1;
+        }
+        .slide-09-brand-phone #slide9BtnSync {
+            animation: slide09-sync-pulse 2.1s ease-in-out infinite;
+        }
+        .slide-09-brand-phone #slide9BtnSync::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -80%;
+            width: 55%;
+            height: 100%;
+            background: linear-gradient(
+                100deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.55) 45%,
+                rgba(255, 255, 255, 0.2) 55%,
+                transparent 100%
+            );
+            animation: slide09-sync-shine 2.8s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .slide-09-brand-phone #slide9BtnSync:hover {
+            filter: brightness(1.06);
+        }
+        .slide-09-brand-phone.active-sync #slide9BtnSync {
+            animation: none;
+        }
+        .slide-09-brand-phone.active-sync #slide9BtnSync::before {
+            animation: none;
+        }
+        @keyframes slide09-sync-pulse {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+                box-shadow:
+                    0 15px 30px rgba(255, 184, 0, 0.4),
+                    0 0 0 0 rgba(255, 184, 0, 0.35);
+            }
+            50% {
+                transform: translateY(-3px) scale(1.03);
+                box-shadow:
+                    0 22px 48px rgba(255, 184, 0, 0.55),
+                    0 0 32px rgba(255, 184, 0, 0.38);
+            }
+        }
+        @keyframes slide09-sync-shine {
+            0%, 12% { transform: translateX(0) skewX(-12deg); opacity: 0; }
+            18% { opacity: 1; }
+            45%, 100% { transform: translateX(340%) skewX(-12deg); opacity: 0; }
+        }
+        .slide-09-brand-phone .btn-main:active { transform: scale(0.95); }
+        .slide-09-brand-phone.active-sync #slide9S1 { left: -100%; opacity: 0; }
+        .slide-09-brand-phone.active-sync #slide9S2 { left: 0; opacity: 1; }
+        .slide-09-brand-phone.active-sync .product-card { transform: scale(1); opacity: 1; }
+        .slide-09-brand-phone.active-sync .watermark {
+            opacity: 1;
+            transform: scale(1) rotate(0);
+        }
+
+        /* Slide 12: Smart Export marketplace phone */
+        .slide-12-mp-outer {
+            perspective: 1100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            --mp-bg: #080808;
+            --mp-card: #121212;
+            --mp-primary: #ffb800;
+        }
+        .slide-12-mp-tilt {
+            transform: rotateY(-13deg) scale(0.98);
+            transform-style: preserve-3d;
+            filter: drop-shadow(-18px 32px 44px rgba(0, 0, 0, 0.72));
+        }
+        .slide-12-mp-phone {
+            width: 380px;
+            height: auto;
+            max-height: 900px;
+            background: var(--mp-bg);
+            border-radius: 60px;
+            border: 12px solid #1a1a1a;
+            position: relative;
+            overflow-x: hidden;
+            overflow-y: auto;
+            box-shadow: 0 0 120px rgba(255, 184, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+        .slide-12-mp-phone .mp-glow-bg {
+            position: absolute;
+            inset: 0;
+            border-radius: 48px;
+            background: radial-gradient(circle at 50% 28%, rgba(255, 184, 0, 0.1) 0%, transparent 68%);
+            z-index: 1;
+            pointer-events: none;
+        }
+        .slide-12-mp-phone .mp-top-nav {
+            padding: 48px 30px 6px;
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+        .slide-12-mp-phone .mp-top-nav h2 {
+            color: white;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+        .slide-12-mp-phone .mp-product-canvas {
+            width: 82%;
+            height: 310px;
+            margin: 12px auto 10px;
+            background: #111;
+            border-radius: 32px;
+            border: 1px solid rgba(255, 184, 0, 0.15);
+            position: relative;
+            z-index: 10;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 44px rgba(0, 0, 0, 0.65);
+        }
+        .slide-12-mp-phone .mp-product-canvas img {
+            width: 88%;
+            max-height: 268px;
+            object-fit: contain;
+            z-index: 5;
+            animation: slide12CanvasFloat 4s ease-in-out infinite;
+        }
+        @keyframes slide12CanvasFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .slide-12-mp-phone .mp-grid-wrap {
+            padding: 0 22px 8px;
+            position: relative;
+            z-index: 10;
+            flex-shrink: 0;
+        }
+        .slide-12-mp-phone .mp-label {
+            text-align: center;
+            color: var(--mp-primary);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            margin-bottom: 12px;
+        }
+        .slide-12-mp-phone .mp-market-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .slide-12-mp-phone .mp-market-card {
+            position: relative;
+            background: var(--mp-card);
+            border-radius: 22px;
+            padding: 2px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.4s;
+        }
+        .slide-12-mp-phone .mp-market-card::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(transparent, transparent, transparent, var(--mp-primary));
+            animation: slide12RotateShimmer 4s linear infinite;
+            z-index: 1;
+        }
+        @keyframes slide12RotateShimmer {
+            100% { transform: rotate(1turn); }
+        }
+        .slide-12-mp-phone .mp-card-inner {
+            background: var(--mp-card);
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            padding: 11px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 2;
+            position: relative;
+            min-height: 0;
+        }
+        .slide-12-mp-phone .mp-icon-box {
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        .slide-12-mp-phone .mp-card-inner span {
+            color: white;
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .slide-12-mp-phone .mp-footer {
+            position: relative;
+            width: 100%;
+            margin-top: 0;
+            padding: 8px 24px 16px;
+            background: linear-gradient(to top, var(--mp-bg) 40%, rgba(8, 8, 8, 0.96));
+            z-index: 20;
+            flex-shrink: 0;
+        }
+        .slide-12-mp-phone .mp-btn-export {
+            width: 100%;
+            padding: 18px;
+            background: var(--mp-primary);
+            color: black;
+            border-radius: 24px;
+            border: none;
+            font-weight: 900;
+            font-size: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 15px 40px rgba(255, 184, 0, 0.4);
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .slide-12-mp-phone .mp-btn-export:hover {
+            filter: brightness(1.2);
+        }
+
+        /* Hero / CTA headings: fluid size (avoid fixed px in markup) */
+        .slide-hero-heading {
+            font-size: clamp(1.65rem, 4.2cqw + 0.45rem, 4.5rem);
+            line-height: 1.08;
+        }
+        .slide-cta-heading {
+            font-size: clamp(2rem, 6cqw + 0.5rem, 5.625rem);
+        }
+        .hero-product-line {
+            white-space: nowrap;
+        }
+        @media (max-width: 380px) {
+            .hero-product-line {
+                white-space: normal;
+            }
+        }
+
+        /* --- Responsive: tablets & below --- */
+        @media (max-width: 1100px) {
+            .text-content {
+                width: 50%;
+                flex: 1 1 50%;
+            }
+            .visual-content {
+                width: 50%;
+                flex: 1 1 50%;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .slide {
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: stretch;
+                padding-top: max(10px, env(safe-area-inset-top));
+                padding-bottom: max(64px, calc(40px + env(safe-area-inset-bottom)));
+                overflow-y: auto;
+                overflow-x: hidden;
+                -webkit-overflow-scrolling: touch;
+            }
+            .text-content,
+            .visual-content {
+                width: 100%;
+                max-width: 640px;
+                margin-left: auto;
+                margin-right: auto;
+                flex: 0 0 auto;
+            }
+            .text-content {
+                text-align: center;
+                padding-top: clamp(4px, 1.5vw, 12px);
+            }
+            .text-content .sub-heading {
+                max-width: 42rem;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .text-content .brand-logo-badge {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .phone {
+                transform: perspective(1000px) rotateY(0deg);
+                width: min(300px, 85vw);
+                max-height: min(600px, 52dvh);
+            }
+            .phone--slide1-mockup img {
+                max-height: min(600px, 52dvh);
+            }
+            .slide:first-child .glow {
+                width: min(90vw, 520px) !important;
+                height: min(90vw, 520px) !important;
+                left: 50% !important;
+                top: -18% !important;
+                transform: translateX(-50%);
+            }
+            .visual-grid {
+                width: min(92vw, 520px);
+                max-height: min(75dvh, 520px);
+            }
+            .compare-box {
+                width: min(92vw, 480px);
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .slide-02-ai-phone-outer {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                overflow: visible;
+            }
+            .slide-02-ai-phone {
+                transform: rotateY(0deg) scale(min(0.88, calc((100vw - 32px) / 420)));
+                transform-origin: center center;
+            }
+            .slide-09-brand-outer {
+                width: 100%;
+                justify-content: center;
+            }
+            .slide-09-brand-tilt {
+                transform: rotateY(0deg) scale(min(0.82, calc((100vw - 32px) / 400)));
+                transform-origin: center center;
+            }
+            .slide-12-mp-outer {
+                width: 100%;
+                justify-content: center;
+            }
+            .slide-12-mp-tilt {
+                transform: rotateY(0deg) scale(min(0.98, calc((100vw - 24px) / 400)));
+                transform-origin: center center;
+            }
+            .slide-12-mp-phone {
+                max-height: min(85dvh, 820px);
+            }
+            .visual-content .float-badge {
+                max-width: calc(100% - 16px);
+            }
+            .visual-content .float-badge[style*="left: -50px"],
+            .visual-content .float-badge[style*="left:-50px"] {
+                left: 8px !important;
+            }
+            .slide:last-child {
+                align-items: center;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .slide {
+                padding-left: max(12px, env(safe-area-inset-left));
+                padding-right: max(12px, env(safe-area-inset-right));
+            }
+            .float-badge h4 {
+                font-size: clamp(16px, 4.2vw, 22px);
+            }
+            .float-badge p {
+                font-size: clamp(12px, 3.2vw, 16px);
+            }
+            .float-badge--store {
+                padding: clamp(18px, 4vw, 30px) clamp(22px, 5vw, 44px);
+            }
+            .float-badge--store i {
+                font-size: clamp(32px, 9vw, 46px);
+            }
+            .float-badge--store h4 {
+                font-size: clamp(20px, 5.5vw, 30px);
+            }
+            .compare-label {
+                font-size: 11px;
+                padding: 8px 12px;
+                bottom: 12px;
+            }
+            .compare-label--before { left: 10px; }
+            .compare-label--after { right: 10px; }
+        }
+
+        /* Wide screens: keep slide padding balanced inside the design canvas */
+        @media (min-width: 1600px) {
+            body.projection-mode .slide {
+                padding-left: max(8%, calc(50cqw - 720px));
+                padding-right: max(8%, calc(50cqw - 720px));
+            }
+            body:not(.projection-mode) .slide {
+                padding-left: max(8%, calc(50vw - 720px));
+                padding-right: max(8%, calc(50vw - 720px));
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="presentation-viewport" id="presentationViewport">
+    <div class="presentation-scale-wrap" id="presentationScaleWrap">
+    <div class="presentation-stage" id="presentationStage">
+    <div class="presentation-container" id="slider">
+
+        <!-- SLIDE 1: HERO -->
+        <div class="slide active">
+            <div class="glow" style="width: 800px; height: 800px; background: var(--gold); top: -200px; left: -100px;"></div>
+            <div class="text-content">
+                <div class="brand-logo-badge">
+                    <img src="images/image%20224.png" alt="SkuShot logo">
+                    <span>SKUShot</span>
+                </div>
+                <h1 class="main-heading slide-hero-heading">
+                    SKUShot<br>
+                    <span class="hero-product-line"><span class="highlight">AI</span> Product Photography</span>
+                </h1>
+                <p class="sub-heading">Turn your smartphone into a professional product photography studio instantly with AI magic.</p>
+            </div>
+            <div class="visual-content">
+                <div class="float-badge" style="top: 100px; right: 20px;">
+                    <i class="fas fa-bolt" style="font-size: 40px; color: var(--gold);"></i>
+                    <div><h4>Instant</h4><p style="color:var(--gold)">Generation</p></div>
+                </div>
+                <div class="phone phone--slide1-mockup"><img src="images/PHONE%201.png" alt="SkuShot app — home categories on phone"></div>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: THE PROBLEM -->
+        <div class="slide">
+            <div class="text-content">
+                <!-- <div class="slide-number">Slide 02</div> -->
+                <h1 class="main-heading">No Studio?<br><span class="highlight">No Problem.</span></h1>
+                <p class="sub-heading">Stop spending thousands on professional photographers and studio rentals. Get high-end results at zero cost.</p>
+            </div>
+            <div class="visual-content">
+                <div class="float-badge" style="bottom: 100px; left: 0;">
+                    <i class="fas fa-hand-holding-usd" style="font-size: 40px; color: var(--gold);"></i>
+                    <div><h4>Zero</h4><p style="color:var(--gold)">Efforts</p></div>
+                </div>
+                <div class="slide-02-ai-phone-outer">
+                    <div class="slide-02-ai-phone">
+                    <div class="phone-frame">
+                        <div class="synthesis-canvas" id="slide2Canvas">
+                            <div class="flash-white" id="slide2Flash"></div>
+                            <div class="energy-wave" id="slide2Wave"></div>
+                            <div class="scan-line"></div>
+                            <div class="hud-overlay" id="slide2Hud">
+                                <div class="data-line" style="animation-delay: 0.2s;">&gt; ANALYZING TEXTURE... [OK]</div>
+                                <div class="data-line" style="animation-delay: 0.6s;">&gt; MAPPING LIGHT PHYSICS... [98%]</div>
+                                <div class="data-line" style="animation-delay: 1.2s;">&gt; GENERATING SHADOW MESH...</div>
+                                <div class="data-line" style="animation-delay: 1.8s;">&gt; SYNTHESIZING ENVIRONMENT...</div>
+                                <div class="data-line" style="animation-delay: 2.5s;">&gt; RECONSTRUCTING REFLECTIONS...</div>
+                                <div class="data-line" style="animation-delay: 3.2s;">&gt; FINALIZING RENDERING ENGINE...</div>
+                            </div>
+                            <img src="images/slide-08-before.png" class="img-layer img-raw" id="slide2ImgRaw" alt="Before synthesis — product on gray, no logo">
+                            <img src="images/slide-08-after.png" class="img-layer img-result" id="slide2ImgResult" alt="After synthesis — studio fashion result">
+                        </div>
+                        <div class="bottom-panel">
+                            <p id="slide2StatusMsg" style="color: #FFB800; font-size: 11px; font-weight: 800; letter-spacing: 3px; margin-bottom: 10px;">READY FOR SYNTHESIS</p>
+                            <div class="slide02-tap-cue" aria-hidden="true">
+                                <i class="fas fa-hand-point-down slide02-tap-hand"></i>
+                                <i class="fas fa-chevron-down slide02-tap-cue-arrow"></i>
+                            </div>
+                            <button type="button" class="btn-magic" id="slide2MagicBtn">
+                                <i class="fas fa-wand-magic-sparkles"></i>
+                                <span id="slide2BtnText">SKUSHOT AI MAGIC</span>
+                            </button>
+                            <p style="color: #444; font-size: 9px; margin-top: 12px; font-weight: 700;">VIRTUAL STUDIO CORE v5.0</p>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: CATEGORIES -->
+        <div class="slide">
+            <div class="text-content">
+                <!-- <div class="slide-number">Slide 03</div> -->
+                <h1 class="main-heading">Styles for <br><span class="highlight">Every Industry.</span></h1>
+                <p class="sub-heading">Across every industry, our AI understands your product's vibe and creates perfect environments.</p>
+            </div>
+            <div class="visual-content">
+                <div class="float-badge" style="top: 100px; left: 0;">
+                    <i class="fas fa-tags" style="font-size: 40px; color: var(--gold);"></i>
+                    <div><h4>250+</h4><p style="color:var(--gold)">Pro Templates</p></div>
+                </div>
+                <div class="phone"><img src="images/slide-03-gallery.png" alt="SkuShot app — Gallery with product styles"></div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: THE PROCESS -->
+        <div class="slide">
+            <div class="text-content">
+                <!-- <div class="slide-number">Slide 04</div> -->
+                <h1 class="main-heading">Slide To<br><span class="highlight">Create Magic.</span></h1>
+                <p class="sub-heading">One-swipe workflow. No technical editing skills needed. Just upload and see the magic.</p>
+            </div>
+            <div class="visual-content">
+                <div class="float-badge float-badge--slide4">
+                    <i class="fas fa-wand-magic-sparkles" style="font-size: 40px; color: var(--gold);"></i>
+                    <div><h4>1 Click</h4><p style="color:var(--gold)">Transformation</p></div>
+                </div>
+                <div class="phone"><img src="images/slide-04-create-magic.png" alt="Create Magic — slide to generate workflow"></div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: EASY UI -->
+        <div class="slide">
+            <div class="text-content">
+                <!-- <div class="slide-number">Slide 07</div> -->
+                <h1 class="main-heading">Studio Results,<br><span class="highlight">Zero Effort.</span></h1>
+                <p class="sub-heading">No complicated settings. No manual editing. Just a few taps and your product is ready for the world.</p>
+            </div>
+            <div class="visual-content">
+                <div class="float-badge" style="top: 150px; left: -50px;">
+                    <i class="fas fa-check-circle" style="font-size: 40px; color: var(--gold);"></i>
+                    <div><h4>User Friendly</h4><p style="color:var(--gold)">Simplified UI</p></div>
+                </div>
+                <div class="phone"><img src="images/slide-07-preview.png" alt="Preview — generated product image"></div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: COMPARISON -->
+        <div class="slide">
+            <div class="text-content">
+                <!-- <div class="slide-number">Slide 08</div> -->
+                <h1 class="main-heading">From Basic to <br><span class="highlight">Brilliant.</span></h1>
+                <p class="sub-heading">Turn messy table-top shots into high-end professional commercial photography in seconds.</p>
+            </div>
+            <div class="visual-content">
+                <div class="compare-box">
+                    <div class="compare-panel compare-panel--before">
+                        <img src="images/slide08-fashion-before.png" alt="Before — casual hand-held product shot">
+                        <span class="compare-label compare-label--before">BEFORE</span>
+                    </div>
+                    <div class="compare-panel">
+                        <img src="images/slide08-fashion-after.png" alt="After — styled studio product scene">
+                        <span class="compare-label compare-label--after">AFTER</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: BRAND IDENTITY -->
+        <div class="slide">
+            <div class="text-content">
+                <!-- <div class="slide-number">Slide 09</div> -->
+                <h1 class="main-heading">Build Your <br><span class="highlight">Business Identity.</span></h1>
+                <p class="sub-heading">Add your brand logo and maintain consistency across all product catalogs.</p>
+            </div>
+            <div class="visual-content">
+                <div class="slide-09-brand-outer">
+                    <div class="slide-09-brand-tilt">
+                        <div class="slide-09-brand-phone" id="slide9Phone">
+                            <div class="bg-grid"></div>
+                            <div id="slide9Processing">
+                                <div class="scanner-line"></div>
+                                <p style="color: var(--slide9-primary); margin-top: 100px; font-weight: 800; letter-spacing: 2px;">AI IS SYNCING...</p>
+                            </div>
+                            <div class="screen" id="slide9S1">
+                                <div class="header">
+                                    <h2>Build Identity</h2>
+                                    <p>Upload your logo and let our AI maintain consistency across your entire catalog.</p>
+                                </div>
+                                <div class="logo-core-container">
+                                    <div class="logo-orb">
+                                        <div class="logo-preview-box">
+                                            <i class="fas fa-leaf" aria-hidden="true"></i>
+                                        </div>
+                                        <p style="color: white; font-weight: 700; font-size: 14px;">logo.png</p>
+                                        <p style="color: var(--slide9-primary); font-size: 10px; font-weight: 800; margin-top: 5px; letter-spacing: 1px;">CORE DETECTED</p>
+                                    </div>
+                                </div>
+                                <div class="btn-container">
+                                    <button type="button" class="btn-main" id="slide9BtnSync">
+                                        <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i> SYNC BRAND LOGO
+                                    </button>
+                                    <div class="slide9-tap-cue" aria-hidden="true">
+                                        <i class="fas fa-hand-pointer"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="screen" id="slide9S2">
+                                <div class="header">
+                                    <h2 style="color: var(--slide9-success);"><i class="fas fa-check-double" aria-hidden="true"></i> Brand Infused</h2>
+                                    <p>Identity applied to all 14 products with perfect perspective alignment.</p>
+                                </div>
+                                <div class="product-grid">
+                                    <div class="product-card" style="transition-delay: 0.1s;"><img src="images/slide09-grid-1.png" alt="Synced product 1"><div class="watermark"><i class="fas fa-leaf" aria-hidden="true"></i></div></div>
+                                    <div class="product-card" style="transition-delay: 0.2s;"><img src="images/slide09-grid-2.png" alt="Synced product 2"><div class="watermark"><i class="fas fa-leaf" aria-hidden="true"></i></div></div>
+                                    <div class="product-card" style="transition-delay: 0.3s;"><img src="images/slide09-grid-3.png" alt="Synced product 3"><div class="watermark"><i class="fas fa-leaf" aria-hidden="true"></i></div></div>
+                                    <div class="product-card" style="transition-delay: 0.4s;"><img src="images/slide09-grid-4.png" alt="Synced product 4"><div class="watermark"><i class="fas fa-leaf" aria-hidden="true"></i></div></div>
+                                </div>
+                                <div class="btn-container">
+                                    <button type="button" class="btn-main" id="slide9BtnExport" style="background: var(--slide9-success);">
+                                        <i class="fas fa-cloud-download-alt" aria-hidden="true"></i> EXPORT CATALOG
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: MULTI-STYLE -->
+        <div class="slide">
+            <div class="text-content">
+                <!-- <div class="slide-number">Slide 10</div> -->
+                <h1 class="main-heading">One Product.<br><span class="highlight">Unlimited Looks.</span></h1>
+                <p class="sub-heading">Take one photo and generate dozens of professional marketing assets instantly.</p>
+            </div>
+            <div class="visual-content">
+                <div class="visual-grid">
+                    <div class="mini-card" style="top:0; left:0; transform: rotate(-10deg); z-index: 2;"><img src="images/slide-10-look-1.png" alt="Hair serum — premium dark scene with liquid swirl"></div>
+                    <div class="mini-card" style="top:0; right:0; transform: rotate(10deg); z-index: 2;"><img src="images/slide-10-look-2.png" alt="Hair serum — warm terracotta with light rays"></div>
+                    <div class="mini-card" style="bottom:0; left:0; transform: rotate(5deg); z-index: 2;"><img src="images/slide-10-look-3.png" alt="Hair serum — sage green lifestyle set"></div>
+                    <div class="mini-card" style="bottom:0; right:0; transform: rotate(-5deg); z-index: 2;"><img src="images/slide-10-look-4.png" alt="Hair serum — hand-held golden sunlight"></div>
+                    <div class="raw-shot">
+                        <img src="images/slide-10-raw.png" alt="Original raw product photo — Morshine hair serum">
+                        <span class="raw-shot-label">RAW SHOT</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 12: MARKETPLACES -->
+        <div class="slide">
+            <div class="text-content">
+                <!-- <div class="slide-number">Slide 12</div> -->
+                <h1 class="main-heading">Ready for <br><span class="highlight">Marketplaces.</span></h1>
+                <p class="sub-heading">Instantly export your stunning product photos to Amazon, Instagram, Shopify, and Flipkart.</p>
+            </div>
+            <div class="visual-content">
+                <div class="slide-12-mp-outer">
+                    <div class="slide-12-mp-tilt">
+                        <div class="slide-12-mp-phone">
+                            <div class="mp-glow-bg"></div>
+                            <div class="mp-top-nav">
+                                <i class="fas fa-bars" style="color: white; opacity: 0.5;" aria-hidden="true"></i>
+                                <h2>SMART EXPORT</h2>
+                                <i class="fas fa-ellipsis-v" style="color: white; opacity: 0.5;" aria-hidden="true"></i>
+                            </div>
+                            <div class="mp-product-canvas">
+                                <img src="images/slide-10-look-1.png" alt="AI enhanced product preview">
+                                <div style="position: absolute; bottom: 10px; background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(255,184,0,0.3);">
+                                    <span style="color: #FFB800; font-size: 8px; font-weight: 800; letter-spacing: 1px;">AI ENHANCED [4K]</span>
+                                </div>
+                            </div>
+                            <div class="mp-grid-wrap">
+                                <p class="mp-label">READY FOR MARKETPLACES</p>
+                                <div class="mp-market-grid">
+                                    <div class="mp-market-card">
+                                        <div class="mp-card-inner">
+                                            <div class="mp-icon-box" style="background: #232f3e; color: #ff9900;"><i class="fab fa-amazon" aria-hidden="true"></i></div>
+                                            <span>Amazon</span>
+                                        </div>
+                                    </div>
+                                    <div class="mp-market-card">
+                                        <div class="mp-card-inner">
+                                            <div class="mp-icon-box" style="background: radial-gradient(circle at 30% 30%, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: white;"><i class="fab fa-instagram" aria-hidden="true"></i></div>
+                                            <span>Instagram</span>
+                                        </div>
+                                    </div>
+                                    <div class="mp-market-card">
+                                        <div class="mp-card-inner">
+                                            <div class="mp-icon-box" style="background: #95bf47; color: white;"><i class="fab fa-shopify" aria-hidden="true"></i></div>
+                                            <span>Shopify</span>
+                                        </div>
+                                    </div>
+                                    <div class="mp-market-card">
+                                        <div class="mp-card-inner">
+                                            <div class="mp-icon-box" style="background: #2874f0; color: #ffe11b;"><i class="fas fa-shopping-cart" aria-hidden="true"></i></div>
+                                            <span>Flipkart</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mp-footer">
+                                <button type="button" class="mp-btn-export">
+                                    <i class="fas fa-share-nodes" aria-hidden="true"></i> EXPORT TO PLATFORMS
+                                </button>
+                                <p style="color: #444; font-size: 10px; text-align: center; margin: 8px 0 0; font-weight: 700; letter-spacing: 1px;">STUNNING CATALOG IN ONE TAP</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 15: FINAL CTA -->
+        <div class="slide slide--final-cta">
+            <div class="slide-final-inner">
+                <div class="brand-logo-badge brand-logo-badge--final">
+                    <img src="images/image%20224.png" alt="SkuShot logo" width="48" height="48">
+                    <span>SKUShot</span>
+                </div>
+                <h1 class="main-heading slide-cta-heading">Scale Your <span class="highlight">Brand</span></h1>
+                <p class="sub-heading" style="margin: 0 auto clamp(32px, 5cqh, 50px); max-width: 36rem;">Transform your product photography with SKUShot today.</p>
+                <div class="slide-final-stores">
+                    <div class="float-badge float-badge--store" style="position:static;"><i class="fab fa-apple" aria-hidden="true"></i><h4>App Store</h4></div>
+                    <div class="float-badge float-badge--store" style="position:static;"><i class="fab fa-google-play" aria-hidden="true"></i><h4>Play Store</h4></div>
+                </div>
+                <div class="qr-box qr-box--hero">
+                    <img src="images/SKUShot%20AI%20Product%20Photography-qr.png" alt="SkuShot app download QR code">
+                    <p>Scan to download the app</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+    </div>
+    </div>
+
+    <div class="progress-dots" id="dotsContainer"></div>
+
+    <script>
+        (function initProjectorStage() {
+            const STAGE_W = 1920;
+            const STAGE_H = 1080;
+            const wrap = document.getElementById('presentationScaleWrap');
+            const stage = document.getElementById('presentationStage');
+            if (!wrap || !stage) return;
+
+            function apply() {
+                const w = window.innerWidth;
+                const h = window.innerHeight;
+                const projection = w >= 901;
+                document.body.classList.toggle('projection-mode', projection);
+                if (!projection) {
+                    wrap.style.width = '';
+                    wrap.style.height = '';
+                    stage.style.width = '';
+                    stage.style.height = '';
+                    stage.style.transform = '';
+                    return;
+                }
+                const reserve = parseFloat(
+                    getComputedStyle(document.documentElement).getPropertyValue('--proj-dots-reserve')
+                ) || 52;
+                const s = Math.min(w / STAGE_W, (h - reserve) / STAGE_H);
+                stage.style.width = STAGE_W + 'px';
+                stage.style.height = STAGE_H + 'px';
+                stage.style.transform = 'scale(' + s + ')';
+                wrap.style.width = STAGE_W * s + 'px';
+                wrap.style.height = STAGE_H * s + 'px';
+            }
+
+            apply();
+            window.addEventListener('resize', apply);
+            document.addEventListener('fullscreenchange', apply);
+        })();
+
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dotsContainer = document.getElementById('dotsContainer');
+
+        // Create dots
+        slides.forEach((_, i) => {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if(i === 0) dot.classList.add('active');
+            dotsContainer.appendChild(dot);
+        });
+
+        const dots = document.querySelectorAll('.dot');
+
+        function updateSlides() {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === currentSlide);
+                dots[i].classList.toggle('active', i === currentSlide);
+            });
+        }
+
+        function next() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlides();
+            }
+        }
+
+        function prev() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlides();
+            }
+        }
+
+        // Event Listeners
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.float-badge')) return;
+            if (e.target.closest('.slide-02-ai-phone-outer')) return;
+            if (e.target.closest('.slide-09-brand-outer')) return;
+            if (e.target.closest('.slide-12-mp-outer')) return;
+            next();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'ArrowRight' || e.key === ' ') next();
+            if(e.key === 'ArrowLeft') prev();
+        });
+
+        (function initSlide02SynthesisPhone() {
+            const btn = document.getElementById('slide2MagicBtn');
+            const canvas = document.getElementById('slide2Canvas');
+            const hud = document.getElementById('slide2Hud');
+            const flash = document.getElementById('slide2Flash');
+            const imgRaw = document.getElementById('slide2ImgRaw');
+            const imgResult = document.getElementById('slide2ImgResult');
+            const statusMsg = document.getElementById('slide2StatusMsg');
+            const btnText = document.getElementById('slide2BtnText');
+            if (!btn || !canvas || !hud || !flash || !imgRaw || !imgResult || !statusMsg || !btnText) return;
+
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (btn.disabled) return;
+
+                btn.disabled = true;
+                btn.style.opacity = '0.5';
+                btnText.textContent = 'SYNTHESIZING...';
+                statusMsg.textContent = 'AI CORE INITIALIZED';
+                canvas.classList.add('anim-active');
+                hud.style.display = 'block';
+
+                setTimeout(() => {
+                    statusMsg.textContent = 'GENERATING ENVIRONMENT...';
+                    imgRaw.style.filter = 'saturate(0) blur(5px)';
+                }, 2000);
+
+                setTimeout(() => {
+                    statusMsg.textContent = 'FINAL SYNTHESIS...';
+                    canvas.classList.add('trigger-synthesis');
+                }, 3500);
+
+                setTimeout(() => {
+                    flash.classList.add('trigger-flash');
+                    setTimeout(() => {
+                        canvas.classList.remove('anim-active');
+                        hud.style.opacity = '0';
+                        imgRaw.style.opacity = '0';
+                        imgResult.style.opacity = '1';
+                        imgResult.style.transform = 'scale(1)';
+                        imgResult.style.filter = 'brightness(1) blur(0px)';
+                        statusMsg.textContent = 'STUDIO MASTERPIECE READY';
+                        statusMsg.style.color = '#2ed573';
+                        btnText.textContent = 'DONE!';
+                        btn.style.background = '#2ed573';
+                        btn.style.opacity = '1';
+                    }, 200);
+                }, 4000);
+            });
+        })();
+
+        (function initSlide09BrandSync() {
+            const phone = document.getElementById('slide9Phone');
+            const proc = document.getElementById('slide9Processing');
+            const btnSync = document.getElementById('slide9BtnSync');
+            const btnExport = document.getElementById('slide9BtnExport');
+            if (!phone || !proc || !btnSync || !btnExport) return;
+
+            btnSync.addEventListener('click', (e) => {
+                e.stopPropagation();
+                proc.style.display = 'flex';
+                setTimeout(() => {
+                    proc.style.display = 'none';
+                    phone.classList.add('active-sync');
+                }, 2000);
+            });
+
+            btnExport.addEventListener('click', (e) => {
+                e.stopPropagation();
+                phone.classList.remove('active-sync');
+            });
+        })();
+    </script>
+</body>
+</html>
