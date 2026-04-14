@@ -246,6 +246,220 @@
             color: #fff;
         }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        @keyframes float-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-17px); }
+        }
+        @keyframes float-soft {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-11px); }
+        }
+        @keyframes float-drift {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-12px) translateX(2px); }
+        }
+
+        /* Slide 3 — give the visual column room so tags sit outside the phone (not on screen) */
+        .slide--slide03 {
+            overflow: visible;
+        }
+        .slide--slide03 .visual-content {
+            overflow: visible;
+        }
+        @media (min-width: 901px) {
+            .slide--slide03 .text-content {
+                flex: 1 1 34%;
+                min-width: 0;
+                max-width: min(520px, 38%);
+            }
+            .slide--slide03 .visual-content {
+                flex: 1 1 66%;
+                min-width: min(760px, 100%);
+            }
+        }
+        /* ~phone 320px + flanking tags — keep tags narrow on mid-width desktops */
+        @media (min-width: 901px) and (max-width: 1180px) {
+            .float-badge--s3-compact {
+                max-width: min(168px, 36cqw);
+            }
+            .slide-03-phone-stage .float-badge--s3-main {
+                max-width: min(220px, 40cqw);
+                padding: 12px 16px;
+            }
+            .slide-03-phone-stage .float-badge--s3-main > i {
+                font-size: clamp(26px, 4cqw, 34px) !important;
+            }
+        }
+
+        /* Slide 3 — phone stage + industry tags (orbit + varied float) */
+        .slide-03-phone-stage {
+            position: relative;
+            width: 100%;
+            max-width: min(860px, 100%);
+            min-height: min(620px, 76cqh);
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            padding-inline: clamp(4px, 1.2cqw, 12px);
+            container-type: inline-size;
+            container-name: s3-orbit;
+            /* ~320px phone + bezel; main tag wider than compact chips */
+            --s3-orbit-half-phone: 172px;
+            --s3-orbit-gap: 5px;
+            /* Right column: extra air so Fashion / F&B chips don’t hug the phone bezel */
+            --s3-orbit-gap-right: 28px;
+            --s3-orbit-chip-left: 255px;
+            --s3-orbit-chip-right: 200px;
+        }
+        .slide-03-phone-stage .phone {
+            position: relative;
+            z-index: 12;
+        }
+        .slide-03-phone-stage .float-badge {
+            z-index: 10;
+        }
+        .slide-03-phone-stage .float-badge--s3 i {
+            color: var(--gold);
+        }
+        .float-badge--s3-compact {
+            padding: clamp(9px, 1.7cqw, 16px) clamp(12px, 2.4cqw, 22px);
+            gap: clamp(6px, 1.3cqw, 12px);
+            max-width: min(192px, 42cqw);
+        }
+        .slide-03-phone-stage .float-badge--s3-main {
+            max-width: min(280px, 46cqw);
+        }
+        .float-badge--s3-compact > i {
+            font-size: clamp(22px, 3.6cqw, 34px) !important;
+        }
+        .float-badge--s3-compact.float-badge--s3-beauty h4,
+        .float-badge--s3-compact.float-badge--s3-home h4,
+        .float-badge--s3-compact.float-badge--s3-foodbev h4 {
+            font-size: clamp(12px, 1.55cqw, 16px);
+            line-height: 1.2;
+            font-weight: 800;
+        }
+        /* Tighter vertical stack (~four slots per side); horizontal orbit on wide stage */
+        .slide-03-phone-stage .float-badge--s3-main {
+            top: 4%;
+            left: 0;
+            animation: float 4s ease-in-out infinite;
+        }
+        .slide-03-phone-stage .float-badge--s3-fashion {
+            top: 4%;
+            right: 0;
+            left: auto;
+            animation: float-slow 5.3s ease-in-out 0.4s infinite;
+        }
+        .slide-03-phone-stage .float-badge--s3-footwear {
+            top: 28%;
+            right: 0;
+            left: auto;
+            animation: float-soft 3.8s ease-in-out 0.2s infinite;
+        }
+        .slide-03-phone-stage .float-badge--s3-beauty {
+            top: 50%;
+            right: 0;
+            bottom: auto;
+            left: auto;
+            animation: float-drift 4.6s ease-in-out 0.55s infinite;
+        }
+        .slide-03-phone-stage .float-badge--s3-jewellery {
+            top: 72%;
+            left: 0;
+            bottom: auto;
+            animation: float-slow 5.8s ease-in-out 0.15s infinite;
+        }
+        .slide-03-phone-stage .float-badge--s3-home {
+            top: 50%;
+            left: 0;
+            animation: float 4.2s ease-in-out 0.85s infinite;
+        }
+        .slide-03-phone-stage .float-badge--s3-kitchen {
+            top: 28%;
+            left: 0;
+            animation: float-soft 4.4s ease-in-out 0.65s infinite;
+        }
+        .slide-03-phone-stage .float-badge--s3-foodbev {
+            top: 72%;
+            right: 0;
+            bottom: auto;
+            left: auto;
+            animation: float-drift 5.1s ease-in-out 0.25s infinite;
+        }
+        @media (min-width: 901px) {
+            @container s3-orbit (min-width: 640px) {
+                .slide-03-phone-stage .float-badge--s3-main,
+                .slide-03-phone-stage .float-badge--s3-kitchen,
+                .slide-03-phone-stage .float-badge--s3-home,
+                .slide-03-phone-stage .float-badge--s3-jewellery {
+                    left: max(2px, calc(50% - var(--s3-orbit-half-phone) - var(--s3-orbit-gap) - var(--s3-orbit-chip-left)));
+                    right: auto;
+                }
+                .slide-03-phone-stage .float-badge--s3-fashion,
+                .slide-03-phone-stage .float-badge--s3-footwear,
+                .slide-03-phone-stage .float-badge--s3-beauty,
+                .slide-03-phone-stage .float-badge--s3-foodbev {
+                    left: calc(50% + var(--s3-orbit-half-phone) + var(--s3-orbit-gap-right));
+                    right: auto;
+                }
+            }
+        }
+        @media (max-width: 900px) {
+            .slide-03-phone-stage {
+                max-width: min(400px, 100%);
+                min-height: min(540px, 58dvh);
+                padding-inline: 2px;
+            }
+            .float-badge--s3-compact {
+                max-width: min(148px, 38vw);
+                padding: 9px 11px;
+                gap: 6px;
+            }
+            .float-badge--s3-compact > i {
+                font-size: clamp(18px, 4.5vw, 26px) !important;
+            }
+            .slide-03-phone-stage .float-badge--s3-main > i {
+                font-size: clamp(26px, 7vw, 36px) !important;
+            }
+            .slide-03-phone-stage .float-badge--s3-main {
+                left: 0;
+                top: 3%;
+            }
+            .slide-03-phone-stage .float-badge--s3-fashion {
+                right: 0;
+                top: 3%;
+            }
+            .slide-03-phone-stage .float-badge--s3-footwear {
+                right: 0;
+                top: 27%;
+            }
+            .slide-03-phone-stage .float-badge--s3-beauty {
+                right: 0;
+                top: 51%;
+                bottom: auto;
+            }
+            .slide-03-phone-stage .float-badge--s3-jewellery {
+                left: 0;
+                top: 73%;
+                bottom: auto;
+            }
+            .slide-03-phone-stage .float-badge--s3-home {
+                left: 0;
+                top: 51%;
+            }
+            .slide-03-phone-stage .float-badge--s3-kitchen {
+                left: 0;
+                top: 27%;
+            }
+            .slide-03-phone-stage .float-badge--s3-foodbev {
+                right: 0;
+                top: 73%;
+                bottom: auto;
+            }
+        }
 
         /* Specific Visual Elements for Different Slides */
         .compare-box {
@@ -749,10 +963,11 @@
             filter: drop-shadow(-20px 34px 46px rgba(0, 0, 0, 0.72));
         }
         .slide-09-brand-phone {
-            width: 375px;
-            height: 812px;
+            width: 420px;
+            height: 900px;
+            min-height: 900px;
             background: var(--slide9-bg);
-            border-radius: 50px;
+            border-radius: 52px;
             border: 8px solid #1a1a1a;
             position: relative;
             overflow: hidden;
@@ -770,22 +985,22 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            padding: 60px 25px;
+            padding: 68px 32px 56px;
             transition: all 0.8s cubic-bezier(0.7, 0, 0.3, 1);
             z-index: 10;
             display: flex;
             flex-direction: column;
         }
-        .slide-09-brand-phone .header { margin-bottom: 30px; }
+        .slide-09-brand-phone .header { margin-bottom: 36px; }
         .slide-09-brand-phone .header h2 {
             color: white;
-            font-size: 26px;
+            font-size: 28px;
             font-weight: 800;
             letter-spacing: -0.5px;
         }
         .slide-09-brand-phone .header p {
             color: #a0a5ba;
-            font-size: 14px;
+            font-size: 15px;
             margin-top: 5px;
             line-height: 1.4;
         }
@@ -799,10 +1014,10 @@
             position: relative;
         }
         .slide-09-brand-phone .logo-orb {
-            width: 180px;
-            height: 180px;
+            width: 200px;
+            height: 200px;
             background: rgba(255, 184, 0, 0.1);
-            border-radius: 45px;
+            border-radius: 48px;
             border: 2px solid var(--slide9-primary);
             display: flex;
             flex-direction: column;
@@ -813,17 +1028,17 @@
             position: relative;
         }
         .slide-09-brand-phone .logo-preview-box {
-            width: 80px;
-            height: 80px;
+            width: 88px;
+            height: 88px;
             background: white;
-            border-radius: 18px;
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 15px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
-        .slide-09-brand-phone .logo-preview-box i { font-size: 45px; color: #000; }
+        .slide-09-brand-phone .logo-preview-box i { font-size: 50px; color: #000; }
         @keyframes slide09-logoFloat {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-20px); }
@@ -856,14 +1071,15 @@
         .slide-09-brand-phone .product-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 16px;
             flex: 1;
-            margin-top: 10px;
+            margin-top: 12px;
         }
         .slide-09-brand-phone .product-card {
             background: var(--slide9-card);
-            border-radius: 25px;
-            height: 190px;
+            border-radius: 26px;
+            height: 228px;
+            min-height: 228px;
             overflow: hidden;
             position: relative;
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -894,7 +1110,7 @@
         }
         .slide-09-brand-phone .watermark i { font-size: 15px; color: #000; }
         .slide-09-brand-phone .btn-container {
-            padding-bottom: 40px;
+            padding-bottom: 48px;
             display: flex;
             flex-direction: column;
             align-items: stretch;
@@ -923,12 +1139,12 @@
         }
         .slide-09-brand-phone .btn-main {
             width: 100%;
-            padding: 22px;
+            padding: 24px;
             background: var(--slide9-primary);
             color: #000;
-            border-radius: 22px;
+            border-radius: 24px;
             font-weight: 900;
-            font-size: 16px;
+            font-size: 17px;
             border: none;
             display: flex;
             justify-content: center;
@@ -1053,7 +1269,7 @@
         }
         .slide-12-mp-phone .mp-top-nav h2 {
             color: white;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 800;
             letter-spacing: 1px;
         }
@@ -1092,10 +1308,13 @@
         .slide-12-mp-phone .mp-label {
             text-align: center;
             color: var(--mp-primary);
-            font-size: 11px;
+            font-size: 13px;
             font-weight: 800;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
+            line-height: 1.3;
             margin-bottom: 12px;
+            padding: 0 12px;
+            box-sizing: border-box;
         }
         .slide-12-mp-phone .mp-market-grid {
             display: grid;
@@ -1139,18 +1358,18 @@
             min-height: 0;
         }
         .slide-12-mp-phone .mp-icon-box {
-            width: 36px;
-            height: 36px;
-            border-radius: 9px;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 18px;
             flex-shrink: 0;
         }
         .slide-12-mp-phone .mp-card-inner span {
             color: white;
-            font-size: 13px;
+            font-size: 15px;
             font-weight: 700;
         }
         .slide-12-mp-phone .mp-footer {
@@ -1170,7 +1389,7 @@
             border-radius: 24px;
             border: none;
             font-weight: 900;
-            font-size: 16px;
+            font-size: 18px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -1181,6 +1400,142 @@
         }
         .slide-12-mp-phone .mp-btn-export:hover {
             filter: brightness(1.2);
+        }
+        .slide-12-mp-phone .mp-footer-tagline {
+            color: #555;
+            font-size: 12px;
+            text-align: center;
+            margin: 10px 0 0;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            line-height: 1.35;
+            padding: 0 8px;
+        }
+
+        /* Slide 12 (marketplaces): orbit floating platform chips around phone */
+        .slide--slide12-market {
+            overflow: visible;
+            justify-content: space-between;
+        }
+        .slide--slide12-market .visual-content {
+            overflow: visible;
+        }
+        /* Keep “Marketplaces.” on one line (avoid “Marketplac” / “es.” split) */
+        .slide--slide12-market .main-heading .highlight {
+            white-space: nowrap;
+        }
+        @media (min-width: 901px) {
+            .slide--slide12-market .text-content {
+                flex: 1 1 44%;
+                min-width: min(22rem, 100%);
+                max-width: none;
+            }
+            .slide--slide12-market .visual-content {
+                flex: 0 1 auto;
+                min-width: 0;
+                max-width: none;
+                margin-left: auto;
+                justify-content: flex-end;
+            }
+        }
+        .slide-12-mp-stage {
+            position: relative;
+            width: 100%;
+            max-width: min(760px, 100%);
+            min-height: min(620px, 76cqh);
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            padding-inline: clamp(4px, 1.2cqw, 12px);
+            container-type: inline-size;
+            container-name: mp-orbit;
+            /* Tighter orbit: slightly under real half-width + chip so pills hug the mockup */
+            --mp-orbit-half-phone: 186px;
+            --mp-orbit-chip: 212px;
+            --mp-orbit-gap: 4px;
+            /* Extra air on the right — top row sits near tilted bezel; avoids chip under phone */
+            --mp-orbit-gap-right: 26px;
+        }
+        .slide-12-mp-stage .slide-12-mp-outer {
+            position: relative;
+            z-index: 14;
+        }
+        .slide-12-mp-float {
+            position: absolute;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: clamp(6px, 1.2cqw, 10px);
+            padding: clamp(8px, 1.5cqw, 12px) clamp(10px, 2cqw, 16px);
+            background: rgba(18, 20, 26, 0.96);
+            backdrop-filter: blur(18px);
+            border: 2px solid rgba(255, 184, 0, 0.32);
+            border-radius: clamp(16px, 3cqw, 22px);
+            box-shadow:
+                0 14px 36px rgba(0, 0, 0, 0.55),
+                0 0 0 1px rgba(255, 184, 0, 0.06) inset;
+            pointer-events: none;
+            max-width: min(228px, 46cqw);
+        }
+        .slide-12-mp-float .mp-float-icon {
+            width: clamp(42px, 5.8cqw, 52px);
+            height: clamp(42px, 5.8cqw, 52px);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(19px, 2.85cqw, 26px);
+            flex-shrink: 0;
+        }
+        .slide-12-mp-float span {
+            color: #fff;
+            font-weight: 800;
+            font-size: clamp(15px, 2.2cqw, 20px);
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+        }
+        /* Left column — Ajio + Myntra (phone grid shows Amazon, Flipkart, Meesho, Shopify) */
+        .slide-12-mp-stage .slide-12-mp-float--ajio {
+            top: 22%;
+            left: 0;
+            bottom: auto;
+            animation: float 4s ease-in-out infinite;
+        }
+        .slide-12-mp-stage .slide-12-mp-float--myntra {
+            top: 58%;
+            left: 0;
+            right: auto;
+            animation: float-soft 4.2s ease-in-out 0.25s infinite;
+        }
+        /* Right column — Instagram + Facebook */
+        .slide-12-mp-stage .slide-12-mp-float--instagram {
+            top: 22%;
+            right: 0;
+            left: auto;
+            animation: float-slow 5.4s ease-in-out 0.4s infinite;
+        }
+        .slide-12-mp-stage .slide-12-mp-float--facebook {
+            top: 58%;
+            right: 0;
+            left: auto;
+            animation: float-drift 4.6s ease-in-out 0.65s infinite;
+        }
+
+        @media (min-width: 901px) {
+            @container mp-orbit (min-width: 640px) {
+                .slide-12-mp-stage .slide-12-mp-float--ajio,
+                .slide-12-mp-stage .slide-12-mp-float--myntra {
+                    left: max(4px, calc(50% - var(--mp-orbit-half-phone) - var(--mp-orbit-gap) - var(--mp-orbit-chip)));
+                    right: auto;
+                }
+                .slide-12-mp-stage .slide-12-mp-float--instagram,
+                .slide-12-mp-stage .slide-12-mp-float--facebook {
+                    left: calc(50% + var(--mp-orbit-half-phone) + var(--mp-orbit-gap-right));
+                    right: auto;
+                }
+            }
         }
 
         /* Hero / CTA headings: fluid size (avoid fixed px in markup) */
@@ -1283,8 +1638,48 @@
                 justify-content: center;
             }
             .slide-09-brand-tilt {
-                transform: rotateY(0deg) scale(min(0.82, calc((100vw - 32px) / 400)));
+                transform: rotateY(0deg) scale(min(0.82, calc((100vw - 32px) / 420)));
                 transform-origin: center center;
+            }
+            .slide-12-mp-stage {
+                max-width: min(400px, 100%);
+                min-height: min(560px, 58dvh);
+                padding-inline: 2px;
+            }
+            .slide-12-mp-float {
+                max-width: min(158px, 42vw);
+                padding: 10px 12px;
+                gap: 8px;
+            }
+            .slide-12-mp-float .mp-float-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 17px;
+                border-radius: 9px;
+            }
+            .slide-12-mp-float span {
+                font-size: clamp(13px, 3.6vw, 15px);
+            }
+            .slide-12-mp-stage .slide-12-mp-float--ajio {
+                left: 0;
+                top: 22%;
+                bottom: auto;
+            }
+            .slide-12-mp-stage .slide-12-mp-float--myntra {
+                left: 0;
+                top: 58%;
+                bottom: auto;
+            }
+            .slide-12-mp-stage .slide-12-mp-float--instagram {
+                right: 0;
+                left: auto;
+                top: 22%;
+            }
+            .slide-12-mp-stage .slide-12-mp-float--facebook {
+                right: 0;
+                left: auto;
+                top: 58%;
+                bottom: auto;
             }
             .slide-12-mp-outer {
                 width: 100%;
@@ -1431,18 +1826,48 @@
         </div>
 
         <!-- SLIDE 3: CATEGORIES -->
-        <div class="slide">
+        <div class="slide slide--slide03">
             <div class="text-content">
                 <!-- <div class="slide-number">Slide 03</div> -->
                 <h1 class="main-heading">Styles for <br><span class="highlight">Every Industry.</span></h1>
                 <p class="sub-heading">Across every industry, our AI understands your product's vibe and creates perfect environments.</p>
             </div>
             <div class="visual-content">
-                <div class="float-badge" style="top: 100px; left: 0;">
-                    <i class="fas fa-tags" style="font-size: 40px; color: var(--gold);"></i>
-                    <div><h4>250+</h4><p style="color:var(--gold)">Pro Templates</p></div>
+                <div class="slide-03-phone-stage">
+                    <div class="float-badge float-badge--s3-main">
+                        <i class="fas fa-tags" style="font-size: 40px; color: var(--gold);"></i>
+                        <div><h4>2500+</h4><p style="color:var(--gold)">Pro Templates</p></div>
+                    </div>
+                    <div class="float-badge float-badge--s3-compact float-badge--s3-fashion">
+                        <i class="fas fa-shirt" aria-hidden="true"></i>
+                        <div><h4>Fashion</h4><p style="color:var(--gold)">Apparel</p></div>
+                    </div>
+                    <div class="float-badge float-badge--s3-compact float-badge--s3-footwear">
+                        <i class="fas fa-shoe-prints" aria-hidden="true"></i>
+                        <div><h4>Footwear</h4><p style="color:var(--gold)">Shoes &amp; more</p></div>
+                    </div>
+                    <div class="float-badge float-badge--s3-compact float-badge--s3-beauty">
+                        <i class="fas fa-spa" aria-hidden="true"></i>
+                        <div><h4>Cosmetics</h4><p style="color:var(--gold)">Glow &amp; care</p></div>
+                    </div>
+                    <div class="float-badge float-badge--s3-compact float-badge--s3-foodbev">
+                        <i class="fas fa-utensils" aria-hidden="true"></i>
+                        <div><h4>Food &amp; Beverage</h4><p style="color:var(--gold)">Eat &amp; drink</p></div>
+                    </div>
+                    <div class="float-badge float-badge--s3-compact float-badge--s3-kitchen">
+                        <i class="fas fa-blender" aria-hidden="true"></i>
+                        <div><h4>Kitchenware</h4><p style="color:var(--gold)">Cook &amp; serve</p></div>
+                    </div>
+                    <div class="float-badge float-badge--s3-compact float-badge--s3-home">
+                        <i class="fas fa-couch" aria-hidden="true"></i>
+                        <div><h4>Home &amp; Furniture</h4><p style="color:var(--gold)">Lifestyle sets</p></div>
+                    </div>
+                    <div class="float-badge float-badge--s3-compact float-badge--s3-jewellery">
+                        <i class="fas fa-gem" aria-hidden="true"></i>
+                        <div><h4>Jewellery</h4><p style="color:var(--gold)">Fine &amp; fashion</p></div>
+                    </div>
+                    <div class="phone"><img src="images/slide-03-gallery.png" alt="SkuShot app — Gallery with product styles"></div>
                 </div>
-                <div class="phone"><img src="images/slide-03-gallery.png" alt="SkuShot app — Gallery with product styles"></div>
             </div>
         </div>
 
@@ -1582,16 +2007,34 @@
             </div>
         </div>
 
-        <!-- SLIDE 12: MARKETPLACES -->
-        <div class="slide">
+        <!-- SLIDE 12: MARKETPLACES (9th slide in deck order) -->
+        <div class="slide slide--slide12-market">
             <div class="text-content">
                 <!-- <div class="slide-number">Slide 12</div> -->
                 <h1 class="main-heading">Ready for <br><span class="highlight">Marketplaces.</span></h1>
-                <p class="sub-heading">Instantly export your stunning product photos to Amazon, Instagram, Shopify, and Flipkart.</p>
+                <p class="sub-heading">Instantly export your stunning product photos to Amazon, Flipkart, Meesho, Shopify, Ajio, Myntra, Instagram, and Facebook.</p>
             </div>
             <div class="visual-content">
-                <div class="slide-12-mp-outer">
-                    <div class="slide-12-mp-tilt">
+                <div class="slide-12-mp-stage">
+                    <!-- Orbit pills: only platforms not shown in the phone grid (Amazon, Flipkart, Meesho, Shopify stay inside). -->
+                    <div class="slide-12-mp-float slide-12-mp-float--ajio" aria-hidden="true">
+                        <div class="mp-float-icon" style="background:#1a1a1a;color:#fff;border:2px solid #e4002b;"><i class="fas fa-shirt" aria-hidden="true"></i></div>
+                        <span>Ajio</span>
+                    </div>
+                    <div class="slide-12-mp-float slide-12-mp-float--myntra" aria-hidden="true">
+                        <div class="mp-float-icon" style="background:linear-gradient(145deg,#ff3f6c 0%,#ff527b 40%,#ee5f7a 100%);color:#fff;font-weight:900;font-size:clamp(18px,2.8cqw,24px);line-height:1;font-family:'Plus Jakarta Sans',sans-serif;" aria-hidden="true">M</div>
+                        <span>Myntra</span>
+                    </div>
+                    <div class="slide-12-mp-float slide-12-mp-float--instagram" aria-hidden="true">
+                        <div class="mp-float-icon" style="background:radial-gradient(circle at 30% 30%,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff;"><i class="fab fa-instagram" aria-hidden="true"></i></div>
+                        <span>Instagram</span>
+                    </div>
+                    <div class="slide-12-mp-float slide-12-mp-float--facebook" aria-hidden="true">
+                        <div class="mp-float-icon" style="background:#1877f2;color:#fff;"><i class="fab fa-facebook-f" aria-hidden="true"></i></div>
+                        <span>Facebook</span>
+                    </div>
+                    <div class="slide-12-mp-outer">
+                        <div class="slide-12-mp-tilt">
                         <div class="slide-12-mp-phone">
                             <div class="mp-glow-bg"></div>
                             <div class="mp-top-nav">
@@ -1602,7 +2045,7 @@
                             <div class="mp-product-canvas">
                                 <img src="images/slide-10-look-1.png" alt="AI enhanced product preview">
                                 <div style="position: absolute; bottom: 10px; background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(255,184,0,0.3);">
-                                    <span style="color: #FFB800; font-size: 8px; font-weight: 800; letter-spacing: 1px;">AI ENHANCED [4K]</span>
+                                    <span style="color: #FFB800; font-size: 10px; font-weight: 800; letter-spacing: 0.8px;">AI ENHANCED [4K]</span>
                                 </div>
                             </div>
                             <div class="mp-grid-wrap">
@@ -1616,8 +2059,14 @@
                                     </div>
                                     <div class="mp-market-card">
                                         <div class="mp-card-inner">
-                                            <div class="mp-icon-box" style="background: radial-gradient(circle at 30% 30%, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: white;"><i class="fab fa-instagram" aria-hidden="true"></i></div>
-                                            <span>Instagram</span>
+                                            <div class="mp-icon-box" style="background: #2874f0; color: #ffe11b;"><i class="fas fa-shopping-cart" aria-hidden="true"></i></div>
+                                            <span>Flipkart</span>
+                                        </div>
+                                    </div>
+                                    <div class="mp-market-card">
+                                        <div class="mp-card-inner">
+                                            <div class="mp-icon-box" style="background: linear-gradient(135deg, #9f2089 0%, #d63384 100%); color: white;"><i class="fas fa-bag-shopping" aria-hidden="true"></i></div>
+                                            <span>Meesho</span>
                                         </div>
                                     </div>
                                     <div class="mp-market-card">
@@ -1626,21 +2075,16 @@
                                             <span>Shopify</span>
                                         </div>
                                     </div>
-                                    <div class="mp-market-card">
-                                        <div class="mp-card-inner">
-                                            <div class="mp-icon-box" style="background: #2874f0; color: #ffe11b;"><i class="fas fa-shopping-cart" aria-hidden="true"></i></div>
-                                            <span>Flipkart</span>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                             <div class="mp-footer">
                                 <button type="button" class="mp-btn-export">
                                     <i class="fas fa-share-nodes" aria-hidden="true"></i> EXPORT TO PLATFORMS
                                 </button>
-                                <p style="color: #444; font-size: 10px; text-align: center; margin: 8px 0 0; font-weight: 700; letter-spacing: 1px;">STUNNING CATALOG IN ONE TAP</p>
+                                <p class="mp-footer-tagline">STUNNING CATALOG IN ONE TAP</p>
                             </div>
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>
