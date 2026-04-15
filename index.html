@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkuShot - 15 Slide Master Presentation</title>
+    <title>SkuShot - Presentation</title>
     <link rel="icon" type="image/png" href="images/image%20224.png">
     <link rel="apple-touch-icon" href="images/image%20224.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -1736,13 +1736,1073 @@
 
         /* Wide screens: keep slide padding balanced inside the design canvas */
         @media (min-width: 1600px) {
-            body.projection-mode .slide {
+            body.projection-mode .slide:not(.slide--adiz) {
                 padding-left: max(8%, calc(50cqw - 720px));
                 padding-right: max(8%, calc(50cqw - 720px));
             }
-            body:not(.projection-mode) .slide {
+            body:not(.projection-mode) .slide:not(.slide--adiz) {
                 padding-left: max(8%, calc(50vw - 720px));
                 padding-right: max(8%, calc(50vw - 720px));
+            }
+        }
+
+        /* ========== Adiz appendix slides (scoped — no clash with SkuShot .text-content / .phone) ========== */
+        .slide.slide--adiz {
+            --adiz-primary: #ff2d55;
+            --adiz-accent: #ffb800;
+            --adiz-bg: #0b0d11;
+            --adiz-text-dim: #a0a5ba;
+            padding: 0 !important;
+            gap: 0 !important;
+            align-items: stretch !important;
+        }
+        .slide--adiz .adiz-slide-canvas {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: min(1080px, 100cqh);
+            background: var(--adiz-bg);
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        .slide--adiz .adiz-text-col {
+            width: 55%;
+            min-width: 0;
+            padding-left: clamp(20px, 7.8cqw, 150px);
+            padding-right: clamp(12px, 2.5cqw, 40px);
+            z-index: 10;
+            position: relative;
+            box-sizing: border-box;
+        }
+        .slide--adiz .adiz-mockup-col {
+            width: 45%;
+            min-width: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+        .slide--adiz .adiz-kicker {
+            font-size: clamp(14px, 1.6cqw, 30px);
+            color: var(--adiz-primary);
+            font-weight: 800;
+            margin-bottom: clamp(12px, 1.8cqw, 25px);
+            letter-spacing: clamp(2px, 0.35cqw, 4px);
+            text-transform: uppercase;
+        }
+        .slide--adiz .adiz-brandline {
+            display: inline-flex;
+            align-items: center;
+            gap: clamp(10px, 1.2cqw, 18px);
+            margin-bottom: clamp(12px, 1.8cqw, 25px);
+            padding: clamp(6px, 0.9cqw, 10px) clamp(10px, 1.4cqw, 16px);
+            border-radius: 999px;
+            background: linear-gradient(90deg, rgba(255, 45, 85, 0.2) 0%, rgba(255, 45, 85, 0.07) 100%);
+            border: 1px solid rgba(255, 45, 85, 0.28);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.32);
+        }
+        .slide--adiz .adiz-brandline-logo {
+            width: clamp(30px, 2.6cqw, 44px);
+            height: clamp(22px, 2.1cqw, 32px);
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 3px 10px rgba(255, 45, 85, 0.38));
+        }
+        .slide--adiz .adiz-brandline-text {
+            font-size: clamp(13px, 1.35cqw, 22px);
+            letter-spacing: clamp(2px, 0.3cqw, 4px);
+            color: #ff3f6c;
+            font-weight: 800;
+            text-transform: uppercase;
+            line-height: 1;
+        }
+        .slide--adiz .adiz-title {
+            font-size: clamp(1.75rem, 4.2cqw + 0.6rem, 7.2rem);
+            font-weight: 900;
+            color: #fff;
+            line-height: 1.05;
+            margin-bottom: clamp(14px, 2cqw, 40px);
+            letter-spacing: clamp(-2px, -0.15cqw, -3px);
+        }
+        .slide--adiz .adiz-lede {
+            font-size: clamp(1rem, 1.35cqw + 0.45rem, 2.65rem);
+            color: var(--adiz-text-dim);
+            font-weight: 500;
+            line-height: 1.4;
+            margin-bottom: clamp(12px, 2cqw, 60px);
+            max-width: 90%;
+        }
+        .slide--adiz .adiz-highlight {
+            color: var(--adiz-primary);
+        }
+        .slide--adiz .adiz-glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(180px);
+            z-index: 1;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        .slide--adiz .adiz-glow-pink {
+            background: var(--adiz-primary);
+            width: min(1200px, 95cqw);
+            height: min(1200px, 95cqh);
+        }
+        .slide--adiz .adiz-badge {
+            position: absolute;
+            background: rgba(25, 27, 33, 0.95);
+            backdrop-filter: blur(25px);
+            border: clamp(2px, 0.25cqw, 3px) solid rgba(255, 45, 85, 0.35);
+            padding: clamp(12px, 1.8cqw, 35px) clamp(14px, 2.5cqw, 50px);
+            border-radius: clamp(16px, 3.5cqw, 45px);
+            display: flex;
+            align-items: center;
+            gap: clamp(8px, 2cqw, 30px);
+            box-shadow: 0 clamp(20px, 4cqw, 45px) clamp(40px, 7cqw, 90px) rgba(0, 0, 0, 0.7);
+            z-index: 25;
+            max-width: min(380px, 88cqw);
+        }
+        .slide--adiz .adiz-badge i {
+            font-size: clamp(22px, 4.2cqw, 75px);
+            color: var(--adiz-primary);
+            flex-shrink: 0;
+        }
+        .slide--adiz .adiz-badge h4 {
+            color: #fff;
+            font-size: clamp(16px, 2.8cqw, 48px);
+            font-weight: 900;
+            line-height: 1.1;
+        }
+        .slide--adiz .adiz-badge p {
+            font-size: clamp(11px, 1.4cqw, 26px);
+            color: var(--adiz-primary);
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+        /* Slide 1 — Instant / Swap: compact, hugging the phone, subtle motion */
+        @keyframes adiz-instant-breathe {
+            0%, 100% {
+                transform: translateX(calc(-100% - 6px)) translateY(0) scale(1);
+                box-shadow:
+                    0 14px 36px rgba(0, 0, 0, 0.68),
+                    0 0 0 1px rgba(255, 45, 85, 0.2),
+                    0 0 26px rgba(255, 45, 85, 0.32);
+            }
+            50% {
+                transform: translateX(calc(-100% - 6px)) translateY(-8px) scale(1.02);
+                box-shadow:
+                    0 20px 44px rgba(0, 0, 0, 0.75),
+                    0 0 0 1px rgba(255, 45, 85, 0.35),
+                    0 0 38px rgba(255, 45, 85, 0.48);
+            }
+        }
+        .slide--adiz .adiz-badge--instant {
+            top: 19%;
+            left: calc(50% - min(240px, 21cqw));
+            max-width: min(300px, 72cqw);
+            padding: clamp(9px, 1.25cqw, 22px) clamp(11px, 1.6cqw, 28px);
+            gap: clamp(6px, 1.2cqw, 14px);
+            border-radius: clamp(14px, 2.8cqw, 28px);
+            transform: translateX(calc(-100% - 6px));
+            animation: adiz-instant-breathe 2.75s ease-in-out infinite;
+        }
+        .slide--adiz .adiz-badge--instant i {
+            font-size: clamp(18px, 3.2cqw, 44px);
+        }
+        .slide--adiz .adiz-badge--instant h4 {
+            font-size: clamp(13px, 2.1cqw, 30px);
+        }
+        .slide--adiz .adiz-badge--instant p {
+            font-size: clamp(9px, 1.05cqw, 17px);
+            margin-top: 2px;
+        }
+        .slide--adiz .adiz-badge--styles {
+            top: 17%;
+            left: clamp(-86px, -5.1cqw, -24px);
+            max-width: min(315px, 70cqw);
+            padding: clamp(9px, 1.25cqw, 22px) clamp(12px, 1.75cqw, 28px);
+            gap: clamp(6px, 1.2cqw, 14px);
+            will-change: transform;
+            transform: translateZ(0);
+            animation: adiz-styles-float 3.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+        }
+        .slide--adiz .adiz-badge--styles i {
+            font-size: clamp(19px, 3.3cqw, 46px);
+        }
+        .slide--adiz .adiz-badge--styles h4 {
+            font-size: clamp(14px, 2.25cqw, 32px);
+        }
+        .slide--adiz .adiz-badge--styles p {
+            font-size: clamp(10px, 1.1cqw, 18px);
+        }
+        @keyframes adiz-styles-float {
+            0%, 100% {
+                transform: translate3d(0, 0, 0);
+            }
+            50% {
+                transform: translate3d(0, -5px, 0);
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .slide--adiz .adiz-badge--instant {
+                animation: none;
+                transform: translateX(calc(-100% - 6px));
+            }
+            .slide--adiz .adiz-badge--styles {
+                animation: none;
+            }
+        }
+        .slide--adiz .adiz-badge--static {
+            position: static;
+            cursor: default;
+            margin-bottom: clamp(10px, 1.5cqw, 20px);
+        }
+        .slide--adiz .adiz-phone {
+            width: min(480px, 42cqw);
+            max-height: min(960px, 86cqh);
+            aspect-ratio: 480 / 960;
+            height: auto;
+            background: #181a20;
+            border-radius: clamp(36px, 5cqw, 70px);
+            border: clamp(6px, 0.9cqw, 16px) solid #262a34;
+            box-shadow: -50px 60px 120px rgba(255, 45, 85, 0.2);
+            overflow: hidden;
+            transform: perspective(1500px) rotateY(-18deg) rotateX(6deg);
+        }
+        .slide--adiz .adiz-phone--flip {
+            transform: perspective(1500px) rotateY(15deg) rotateX(6deg);
+        }
+        .slide--adiz .adiz-phone img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .slide--adiz .adiz-interactive-phone {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: clamp(12px, 1.8cqw, 18px);
+            gap: clamp(10px, 1.4cqw, 16px);
+            background: linear-gradient(180deg, rgba(13, 16, 23, 0.98), rgba(8, 10, 15, 0.98));
+        }
+        .slide--adiz .adiz-int-title {
+            color: #fff;
+            font-size: clamp(12px, 1.05cqw, 16px);
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0.9;
+            margin-bottom: 2px;
+        }
+        .slide--adiz .adiz-preview-box {
+            position: relative;
+            width: 100%;
+            border-radius: clamp(14px, 2.2cqw, 22px);
+            min-height: 52%;
+            flex: 1 1 auto;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            background: linear-gradient(140deg, #181d28 0%, #0e1118 100%);
+        }
+        .slide--adiz .adiz-preview-placeholder,
+        .slide--adiz .adiz-preview-image {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+        .slide--adiz .adiz-preview-placeholder {
+            flex-direction: column;
+            gap: 8px;
+            color: #c7cddc;
+            font-weight: 700;
+            font-size: clamp(12px, 1.2cqw, 18px);
+            letter-spacing: 0.4px;
+        }
+        .slide--adiz .adiz-preview-placeholder i {
+            font-size: clamp(28px, 3.2cqw, 42px);
+            color: #ff5d83;
+        }
+        .slide--adiz .adiz-preview-image {
+            opacity: 0;
+            transform: scale(1.03);
+            pointer-events: none;
+        }
+        .slide--adiz .adiz-preview-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+        .slide--adiz .adiz-preview-badge {
+            position: absolute;
+            left: 10px;
+            bottom: 10px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.58);
+            border: 1px solid rgba(255, 45, 85, 0.4);
+            color: #ffd7e3;
+            font-size: clamp(10px, 0.88cqw, 13px);
+            font-weight: 800;
+            letter-spacing: 0.6px;
+        }
+        @keyframes adiz-select-pulse {
+            0%, 100% {
+                box-shadow:
+                    0 0 0 0 rgba(255, 45, 85, 0.42),
+                    0 10px 24px rgba(255, 45, 85, 0.12);
+                transform: perspective(700px) rotateX(0deg) translateY(0);
+            }
+            50% {
+                box-shadow:
+                    0 0 0 8px rgba(255, 45, 85, 0),
+                    0 14px 30px rgba(255, 45, 85, 0.24);
+                transform: perspective(700px) rotateX(-8deg) translateY(-2px);
+            }
+        }
+        @keyframes adiz-generate-pulse {
+            0%, 100% {
+                box-shadow:
+                    0 12px 28px rgba(255, 45, 85, 0.35),
+                    0 0 0 0 rgba(255, 45, 85, 0.5);
+                transform: perspective(800px) rotateX(0deg) translateY(0);
+            }
+            50% {
+                box-shadow:
+                    0 16px 34px rgba(255, 45, 85, 0.45),
+                    0 0 0 10px rgba(255, 45, 85, 0);
+                transform: perspective(800px) rotateX(-10deg) translateY(-2px);
+            }
+        }
+        .slide--adiz .adiz-select-btn {
+            width: 100%;
+            border: 1px solid rgba(255, 45, 85, 0.4);
+            border-radius: clamp(12px, 2cqw, 18px);
+            background: rgba(255, 45, 85, 0.13);
+            color: #ffe8ef;
+            font-weight: 800;
+            font-size: clamp(11px, 1.05cqw, 16px);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: clamp(10px, 1.2cqw, 14px);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease;
+            animation: adiz-select-pulse 1.8s ease-in-out infinite;
+            transform-style: preserve-3d;
+            transform-origin: center bottom;
+            position: relative;
+            overflow: hidden;
+        }
+        .slide--adiz .adiz-select-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(110deg, transparent 20%, rgba(255, 255, 255, 0.22) 46%, transparent 72%);
+            transform: translateX(-120%);
+            animation: adiz-cta-shine 2.2s ease-in-out infinite;
+            pointer-events: none;
+        }
+        .slide--adiz .adiz-select-btn:hover {
+            transform: translateY(-1px);
+            background: rgba(255, 45, 85, 0.2);
+        }
+        .slide--adiz .adiz-template-list {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: clamp(8px, 1cqw, 12px);
+            align-items: stretch;
+        }
+        .slide--adiz .adiz-template-chip {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 3px;
+            cursor: pointer;
+            transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            text-align: center;
+        }
+        .slide--adiz .adiz-template-chip::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            border: 1px solid transparent;
+            pointer-events: none;
+            transition: border-color 0.2s ease, opacity 0.2s ease;
+            opacity: 0;
+        }
+        .slide--adiz .adiz-template-chip:hover,
+        .slide--adiz .adiz-template-chip:focus-visible {
+            border-color: rgba(255, 120, 170, 0.75);
+            transform: translateY(-3px) scale(1.015);
+            box-shadow:
+                0 10px 24px rgba(255, 45, 85, 0.24),
+                0 0 28px rgba(108, 151, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+            outline: none;
+        }
+        .slide--adiz .adiz-template-chip:hover::after,
+        .slide--adiz .adiz-template-chip:focus-visible::after {
+            border-color: rgba(255, 255, 255, 0.34);
+            opacity: 1;
+        }
+        .slide--adiz .adiz-template-chip img {
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            object-fit: cover;
+            object-position: center top;
+            border-radius: 9px;
+            display: block;
+            margin-bottom: 4px;
+            transition: transform 0.24s ease, filter 0.24s ease;
+        }
+        .slide--adiz .adiz-template-chip:hover img,
+        .slide--adiz .adiz-template-chip:focus-visible img {
+            transform: scale(1.03);
+            filter: saturate(1.08) contrast(1.03);
+        }
+        .slide--adiz .adiz-template-chip span {
+            color: #d8deec;
+            font-size: clamp(9px, 0.72cqw, 11px);
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            display: block;
+            padding-bottom: 2px;
+            transition: color 0.2s ease;
+        }
+        .slide--adiz .adiz-template-chip:hover span,
+        .slide--adiz .adiz-template-chip:focus-visible span {
+            color: #ffe7ef;
+        }
+        .slide--adiz .adiz-template-chip.is-active {
+            border: 2px solid rgba(243, 12, 112, 0.95);
+            transform: translateY(-3px) scale(1.03);
+            box-shadow:
+                0 14px 28px rgba(0, 0, 0, 0.45),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                0 0 18px rgba(0, 0, 0, 0.35);
+            background: linear-gradient(180deg, rgba(35, 40, 52, 0.42) 0%, rgba(18, 22, 30, 0.28) 100%);
+        }
+        .slide--adiz .adiz-template-chip.is-active::after {
+            border: 2px solid rgba(8, 10, 16, 0.82);
+            opacity: 1;
+        }
+        .slide--adiz .adiz-template-chip.is-active img {
+            transform: scale(1.04);
+            filter: saturate(1.14) contrast(1.05) brightness(1.03);
+        }
+        .slide--adiz .adiz-template-chip.is-active span {
+            color: #fff3f7;
+            font-weight: 900;
+            text-shadow: 0 0 10px rgba(255, 120, 170, 0.45);
+        }
+        .slide--adiz .adiz-generate-btn {
+            --adiz-knob-pad: clamp(8px, 1cqw, 12px);
+            --adiz-knob-size: clamp(28px, 2.4cqw, 34px);
+            width: 100%;
+            border: none;
+            border-radius: clamp(14px, 2.2cqw, 20px);
+            background: linear-gradient(90deg, #ff2d55 0%, #ff4d73 100%);
+            color: #fff;
+            font-weight: 900;
+            font-size: clamp(12px, 1.1cqw, 17px);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: clamp(12px, 1.35cqw, 16px) clamp(10px, 1.4cqw, 16px);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            cursor: pointer;
+            box-shadow: 0 12px 28px rgba(255, 45, 85, 0.35);
+            transition: transform 0.22s ease, filter 0.22s ease;
+            animation: none;
+            transform-style: preserve-3d;
+            transform-origin: center bottom;
+            position: relative;
+            overflow: hidden;
+        }
+        .slide--adiz .adiz-generate-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(110deg, transparent 20%, rgba(255, 255, 255, 0.26) 46%, transparent 72%);
+            transform: translateX(-120%);
+            animation: none;
+            pointer-events: none;
+        }
+        @keyframes adiz-cta-shine {
+            0% { transform: translateX(-120%); }
+            35% { transform: translateX(120%); }
+            100% { transform: translateX(120%); }
+        }
+        @keyframes adiz-knob-bounce {
+            0%, 100% { transform: translate3d(0, -50%, 0); }
+            50% { transform: translate3d(2px, -50%, 0); }
+        }
+        @keyframes adiz-knob-slide-run {
+            0% {
+                left: var(--adiz-knob-pad);
+                transform: translate3d(0, -50%, 0);
+            }
+            100% {
+                left: calc(100% - var(--adiz-knob-size) - var(--adiz-knob-pad));
+                transform: translate3d(0, -50%, 0);
+            }
+        }
+        .slide--adiz .adiz-generate-btn:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.07);
+        }
+        .slide--adiz .adiz-generate-btn .adiz-slide-knob {
+            width: var(--adiz-knob-size);
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+            background: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow:
+                0 5px 14px rgba(0, 0, 0, 0.28),
+                inset 0 1px 0 rgba(255, 255, 255, 0.45);
+            flex-shrink: 0;
+            overflow: hidden;
+            animation: adiz-knob-bounce 1.25s ease-in-out infinite;
+            position: absolute;
+            left: var(--adiz-knob-pad);
+            top: 50%;
+            transform: translate3d(0, -50%, 0);
+            backface-visibility: hidden;
+        }
+        .slide--adiz .adiz-generate-btn .adiz-slide-knob i {
+            font-size: clamp(9px, 0.78cqw, 12px);
+            color: #3a3f4a;
+            line-height: 1;
+        }
+        .slide--adiz .adiz-generate-btn .adiz-slide-label {
+            line-height: 1;
+            font-size: inherit;
+            font-weight: 900;
+            width: 100%;
+            text-align: center;
+            padding-inline: clamp(38px, 3.6cqw, 50px);
+            white-space: nowrap;
+        }
+        .slide--adiz .adiz-interactive-phone.has-selection .adiz-preview-placeholder {
+            opacity: 0;
+            transform: scale(0.98);
+            pointer-events: none;
+        }
+        .slide--adiz .adiz-interactive-phone.has-selection .adiz-preview-image {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .slide--adiz .adiz-interactive-phone.has-selection .adiz-select-btn {
+            animation: none;
+            box-shadow: none;
+        }
+        .slide--adiz .adiz-interactive-phone.has-selection .adiz-select-btn::after {
+            animation: none;
+        }
+        .slide--adiz .adiz-interactive-phone.has-selection .adiz-generate-btn {
+            animation: adiz-generate-pulse 1.65s ease-in-out infinite;
+        }
+        .slide--adiz .adiz-interactive-phone.has-selection .adiz-generate-btn::after {
+            animation: adiz-cta-shine 1.9s ease-in-out infinite;
+        }
+        .slide--adiz .adiz-interactive-phone.generated .adiz-generate-btn {
+            background: linear-gradient(90deg, #30d67a 0%, #23b062 100%);
+            box-shadow: 0 12px 28px rgba(46, 213, 115, 0.32);
+            animation: none;
+        }
+        .slide--adiz .adiz-interactive-phone.generated .adiz-generate-btn .adiz-slide-knob {
+            animation: none;
+            left: calc(100% - var(--adiz-knob-size) - var(--adiz-knob-pad));
+            right: auto;
+            transform: translate3d(0, -50%, 0);
+        }
+        .slide--adiz .adiz-interactive-phone.generated .adiz-generate-btn::after {
+            animation: none;
+        }
+        .slide--adiz .adiz-generating-overlay {
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 4;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            overflow: hidden;
+            background: #000;
+            transition: opacity 0.35s ease;
+        }
+        .slide--adiz .adiz-generating-stars {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            background-image:
+                radial-gradient(circle at 16px 14px, rgba(255, 255, 255, 0.9) 0 0.95px, transparent 1.25px),
+                radial-gradient(circle at 46px 30px, rgba(255, 129, 208, 0.82) 0 0.95px, transparent 1.25px),
+                radial-gradient(circle at 34px 52px, rgba(120, 173, 255, 0.84) 0 0.95px, transparent 1.25px),
+                radial-gradient(circle at 64px 20px, rgba(88, 235, 255, 0.82) 0 0.95px, transparent 1.25px);
+            background-size: 88px 72px;
+            background-repeat: repeat;
+            opacity: 0.68;
+            animation:
+                adiz-stars-twinkle 2.2s ease-in-out infinite,
+                adiz-stars-drift 16s linear infinite;
+        }
+        .slide--adiz .adiz-generating-stars::before,
+        .slide--adiz .adiz-generating-stars::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-repeat: repeat;
+            mix-blend-mode: screen;
+        }
+        .slide--adiz .adiz-generating-stars::before {
+            background-image:
+                radial-gradient(circle at 24px 18px, rgba(255, 255, 255, 0.82) 0 0.85px, transparent 1.15px),
+                radial-gradient(circle at 58px 36px, rgba(255, 159, 215, 0.75) 0 0.85px, transparent 1.15px),
+                radial-gradient(circle at 76px 22px, rgba(140, 212, 255, 0.74) 0 0.85px, transparent 1.15px);
+            background-size: 110px 88px;
+            opacity: 0.45;
+            animation:
+                adiz-stars-twinkle 2.8s ease-in-out infinite reverse,
+                adiz-stars-drift-2 22s linear infinite;
+        }
+        .slide--adiz .adiz-generating-stars::after {
+            background-image:
+                radial-gradient(circle at 20px 18px, rgba(255, 255, 255, 0.88) 0 0.75px, transparent 1.05px),
+                radial-gradient(circle at 40px 40px, rgba(132, 255, 228, 0.72) 0 0.75px, transparent 1.05px),
+                radial-gradient(circle at 66px 22px, rgba(186, 160, 255, 0.68) 0 0.75px, transparent 1.05px);
+            background-size: 120px 96px;
+            opacity: 0.3;
+            animation:
+                adiz-stars-twinkle-fast 2.4s ease-in-out infinite,
+                adiz-stars-drift 20s linear infinite reverse;
+        }
+        .slide--adiz .adiz-generating-overlay::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle, rgba(255, 255, 255, 0.22) 1.1px, transparent 1.2px);
+            background-size: 22px 22px;
+            background-position: 0 0;
+            mask-image: linear-gradient(to bottom, transparent 0%, transparent 44%, rgba(0, 0, 0, 0.82) 60%, #000 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 44%, rgba(0, 0, 0, 0.82) 60%, #000 100%);
+            animation: adiz-gen-grid-drift 2.2s linear infinite;
+            opacity: 0.45;
+        }
+        .slide--adiz .adiz-generating-overlay::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(70% 46% at 58% 64%, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.02) 58%, transparent 100%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 36%);
+            animation: adiz-gen-soft-pulse 1.8s ease-in-out infinite;
+            opacity: 0.6;
+        }
+        .slide--adiz .adiz-generating-scan {
+            position: absolute;
+            left: 10%;
+            right: 10%;
+            height: 48%;
+            bottom: -8%;
+            top: auto;
+            border-radius: 999px;
+            background: linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.03) 0%,
+                rgba(255, 255, 255, 0.07) 26%,
+                rgba(255, 255, 255, 0.02) 66%,
+                transparent 100%
+            );
+            box-shadow:
+                inset 0 0 80px rgba(255, 255, 255, 0.04),
+                0 0 36px rgba(0, 0, 0, 0.25);
+            animation: adiz-gen-scan 2.2s ease-in-out infinite;
+        }
+        .slide--adiz .adiz-generating-ring {
+            display: none;
+        }
+        .slide--adiz .adiz-generating-text {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            z-index: 2;
+            display: inline-flex;
+            align-items: flex-end;
+            gap: 6px;
+            font-weight: 900;
+            font-size: clamp(13px, 1.2cqw, 18px);
+            letter-spacing: 0.2px;
+            text-transform: none;
+            color: #fff;
+            text-shadow:
+                0 0 20px rgba(255, 255, 255, 0.15),
+                0 2px 8px rgba(0, 0, 0, 0.5);
+            animation: adiz-gen-text-glow 0.75s ease-in-out infinite alternate;
+        }
+        .slide--adiz .adiz-generating-text .adiz-gen-dots {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding-bottom: 1px;
+        }
+        .slide--adiz .adiz-generating-text .adiz-gen-dot {
+            width: 6px;
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow:
+                0 0 10px rgba(255, 255, 255, 0.65);
+            animation: adiz-gen-dot-bounce 0.9s ease-in-out infinite;
+            transform: translateY(0);
+        }
+        .slide--adiz .adiz-generating-text .adiz-gen-dot:nth-child(2) {
+            animation-delay: 0.12s;
+        }
+        .slide--adiz .adiz-generating-text .adiz-gen-dot:nth-child(3) {
+            animation-delay: 0.24s;
+        }
+        @keyframes adiz-gen-grid-drift {
+            0% { background-position: 0 0; }
+            100% { background-position: 22px 22px; }
+        }
+        @keyframes adiz-gen-scan {
+            0%, 100% { transform: translateY(0); opacity: 0.68; }
+            50% { transform: translateY(-6px); opacity: 0.92; }
+        }
+        @keyframes adiz-gen-soft-pulse {
+            0%, 100% { opacity: 0.48; }
+            50% { opacity: 0.8; }
+        }
+        @keyframes adiz-stars-twinkle {
+            0%, 100% { opacity: 0.42; }
+            50% { opacity: 0.72; }
+        }
+        @keyframes adiz-stars-twinkle-fast {
+            0%, 100% { opacity: 0.22; }
+            50% { opacity: 0.48; }
+        }
+        @keyframes adiz-stars-drift {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-10px, -8px, 0); }
+        }
+        @keyframes adiz-stars-drift-2 {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(8px, -6px, 0); }
+        }
+        @keyframes adiz-gen-text-glow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.92; }
+        }
+        @keyframes adiz-gen-dot-bounce {
+            0%, 80%, 100% { transform: translate3d(0, 0, 0); opacity: 0.55; }
+            40% { transform: translate3d(0, -5px, 0); opacity: 1; }
+        }
+        @keyframes adiz-result-reveal {
+            0% {
+                opacity: 0.85;
+                transform: scale(1.06);
+                filter: brightness(1.15) saturate(1.12);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+                filter: none;
+            }
+        }
+        .slide--adiz .adiz-preview-image img.adiz-result-reveal {
+            animation: adiz-result-reveal 1s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+        }
+        .slide--adiz .adiz-interactive-phone.is-generating .adiz-preview-box {
+            box-shadow:
+                0 0 0 2px rgba(255, 115, 168, 0.92),
+                0 0 56px rgba(255, 45, 85, 0.45),
+                0 0 92px rgba(93, 145, 255, 0.38),
+                0 0 140px rgba(63, 228, 255, 0.16);
+            animation: adiz-preview-gen-breathe 3.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+        }
+        @keyframes adiz-preview-gen-breathe {
+            0%, 100% { transform: translateZ(0) scale(1); }
+            50% { transform: translateZ(0) scale(1.002); }
+        }
+        .slide--adiz .adiz-interactive-phone.is-generating .adiz-generating-overlay {
+            opacity: 1;
+            visibility: visible;
+        }
+        .slide--adiz .adiz-interactive-phone.is-generating .adiz-generate-btn {
+            animation: none;
+            opacity: 0.72;
+            pointer-events: none;
+            filter: grayscale(0.2);
+        }
+        .slide--adiz .adiz-interactive-phone.is-generating .adiz-generate-btn::after {
+            animation: none;
+        }
+        .slide--adiz .adiz-interactive-phone.is-generating .adiz-generate-btn .adiz-slide-knob {
+            animation: adiz-knob-slide-run 3.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .slide--adiz .adiz-select-btn,
+            .slide--adiz .adiz-interactive-phone.has-selection .adiz-generate-btn {
+                animation: none;
+            }
+            .slide--adiz .adiz-generate-btn .adiz-slide-knob {
+                animation: none;
+            }
+            .slide--adiz .adiz-interactive-phone.is-generating .adiz-generate-btn .adiz-slide-knob {
+                left: calc(100% - var(--adiz-knob-size) - var(--adiz-knob-pad));
+                right: auto;
+                transform: translate3d(0, -50%, 0);
+            }
+            .slide--adiz .adiz-generating-overlay::before {
+                animation: none;
+            }
+            .slide--adiz .adiz-generating-stars {
+                animation: none;
+                opacity: 0.65;
+            }
+            .slide--adiz .adiz-generating-stars::before,
+            .slide--adiz .adiz-generating-stars::after {
+                animation: none;
+            }
+            .slide--adiz .adiz-generating-overlay::after {
+                animation: none;
+                opacity: 0.35;
+            }
+            .slide--adiz .adiz-generating-scan {
+                animation: none;
+                bottom: -8%;
+                opacity: 0.5;
+            }
+            .slide--adiz .adiz-generating-ring {
+                animation: none;
+            }
+            .slide--adiz .adiz-generating-text {
+                animation: none;
+            }
+            .slide--adiz .adiz-generating-text .adiz-gen-dot {
+                animation: none;
+                opacity: 0.85;
+            }
+            .slide--adiz .adiz-interactive-phone.is-generating .adiz-preview-box {
+                animation: none;
+            }
+            .slide--adiz .adiz-preview-image img.adiz-result-reveal {
+                animation-duration: 0.35s;
+            }
+        }
+        .slide--adiz .adiz-slide-canvas--cta {
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0b0d11 0%, #1a0005 100%);
+            padding: clamp(24px, 4cqh, 60px) clamp(16px, 4cqw, 48px);
+        }
+        .slide--adiz .adiz-text-col--cta {
+            width: 100%;
+            max-width: 100%;
+            text-align: center;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .slide--adiz .adiz-cta-logo {
+            width: auto;
+            max-width: min(520px, 62cqw);
+            height: clamp(60px, 8cqh, 92px);
+            display: block;
+            margin: 0 auto;
+            object-fit: contain;
+        }
+        .slide--adiz .adiz-cta-logo-wrap {
+            width: fit-content;
+            max-width: 92%;
+            margin: 0 auto clamp(10px, 1.2cqh, 16px);
+            border-radius: clamp(28px, 4cqw, 36px);
+            padding: clamp(6px, 0.8cqh, 10px) clamp(10px, 1.3cqw, 14px);
+            overflow: hidden;
+            position: relative;
+            background:
+                radial-gradient(120% 100% at 50% 0%, rgba(255, 62, 120, 0.18) 0%, rgba(255, 62, 120, 0) 56%),
+                linear-gradient(145deg, #0f1118 0%, #17101d 52%, #230917 100%);
+            border: 1px solid rgba(255, 62, 120, 0.42);
+            box-shadow:
+                0 14px 32px rgba(0, 0, 0, 0.45),
+                0 0 30px rgba(255, 62, 120, 0.26),
+                0 0 64px rgba(255, 62, 120, 0.16);
+            filter: none;
+        }
+        .slide--adiz .adiz-cta-logo-wrap::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: inherit;
+            border: 1.5px solid rgba(255, 140, 186, 0.5);
+            pointer-events: none;
+            box-shadow:
+                0 0 14px rgba(255, 92, 156, 0.38),
+                0 0 30px rgba(255, 92, 156, 0.28),
+                0 10px 24px rgba(0, 0, 0, 0.3);
+            animation: adiz-logo-focus-pulse 1.9s ease-in-out infinite;
+        }
+        .slide--adiz .adiz-cta-logo-wrap::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 90% 70% at 50% 50%, rgba(255, 111, 170, 0.18) 0%, rgba(255, 111, 170, 0) 65%);
+            pointer-events: none;
+        }
+        @keyframes adiz-logo-focus-pulse {
+            0%, 100% { opacity: 0.72; }
+            50% { opacity: 1; }
+        }
+        .slide--adiz .adiz-title--mega {
+            font-size: clamp(1.8rem, 4.9cqw + 0.45rem, 8.2rem);
+        }
+        .slide--adiz .adiz-text-col--cta .adiz-lede {
+            font-size: clamp(0.92rem, 1.1cqw + 0.4rem, 2rem);
+            max-width: min(1100px, 86%);
+        }
+        .slide--adiz .adiz-cta-row {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            gap: clamp(16px, 2.2cqw, 26px);
+            width: 100%;
+        }
+        .slide--adiz .adiz-qr-placeholder {
+            width: min(410px, 64cqw);
+            border: clamp(2px, 0.28cqw, 3px) solid rgba(255, 62, 120, 0.56);
+            border-radius: clamp(18px, 2.3cqw, 28px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(120% 100% at 50% 0%, rgba(255, 62, 120, 0.16) 0%, rgba(255, 62, 120, 0) 58%),
+                linear-gradient(145deg, #141923 0%, #17111d 54%, #220a19 100%);
+            box-shadow:
+                0 0 20px rgba(255, 62, 120, 0.34),
+                0 0 44px rgba(255, 62, 120, 0.24),
+                0 12px 28px rgba(0, 0, 0, 0.42),
+                inset 0 0 20px rgba(255, 62, 120, 0.08);
+            box-sizing: border-box;
+            padding: clamp(14px, 1.8cqh, 20px);
+        }
+        .slide--adiz .adiz-qr-placeholder .adiz-qr-inner {
+            text-align: center;
+            width: 100%;
+        }
+        .slide--adiz .adiz-qr-placeholder .adiz-qr-image {
+            width: min(305px, 50cqw);
+            max-width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 12px;
+            display: inline-block;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.32);
+            background: #fff;
+        }
+        .slide--adiz .adiz-qr-placeholder .adiz-qr-caption {
+            color: #fff;
+            font-weight: 900;
+            margin-top: 12px;
+            font-size: clamp(16px, 1.65cqw, 26px);
+            line-height: 1.12;
+            letter-spacing: 0.3px;
+        }
+        .slide--adiz .adiz-store-stack {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(14px, 1.8cqw, 22px);
+            width: 100%;
+        }
+        .slide--adiz .adiz-cta-row .adiz-store-stack .adiz-badge {
+            margin-bottom: 0;
+            min-width: min(280px, 41cqw);
+            border-radius: 24px;
+            border: 1.5px solid rgba(245, 188, 22, 0.5);
+            background: linear-gradient(145deg, #151b28 0%, #0f1520 100%);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.34), 0 0 18px rgba(245, 188, 22, 0.14);
+            padding: clamp(12px, 1.25cqh, 16px) clamp(18px, 1.8cqw, 24px);
+        }
+        .slide--adiz .adiz-cta-row .adiz-store-stack .adiz-badge i {
+            color: #fff;
+            font-size: clamp(28px, 2.6cqw, 40px);
+        }
+        .slide--adiz .adiz-cta-row .adiz-store-stack .adiz-badge h4 {
+            color: #fff;
+            font-size: clamp(17px, 1.65cqw, 28px);
+            line-height: 1;
+            margin-bottom: 4px;
+            letter-spacing: 0.2px;
+        }
+        .slide--adiz .adiz-cta-row .adiz-store-stack .adiz-badge p {
+            color: #ff3d73;
+            font-size: clamp(12px, 1.1cqw, 16px);
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        @media (max-width: 900px) {
+            .slide--adiz .adiz-slide-canvas:not(.adiz-slide-canvas--cta) {
+                flex-direction: column;
+                padding-top: clamp(16px, 3cqh, 32px);
+                padding-bottom: clamp(12px, 2cqh, 24px);
+            }
+            .slide--adiz .adiz-text-col,
+            .slide--adiz .adiz-mockup-col {
+                width: 100%;
+            }
+            .slide--adiz .adiz-mockup-col {
+                min-height: min(420px, 45cqh);
+            }
+            .slide--adiz .adiz-badge {
+                max-width: min(300px, 92vw);
+            }
+            .slide--adiz .adiz-badge--instant {
+                top: 15%;
+                left: calc(50% - min(190px, 44vw));
+            }
+            .slide--adiz .adiz-badge--styles {
+                left: clamp(-18px, -1.2vw, -6px);
+            }
+            .slide--adiz .adiz-cta-row {
+                flex-direction: column;
+            }
+            .slide--adiz .adiz-store-stack {
+                align-items: center;
+                flex-direction: column;
             }
         }
     </style>
@@ -2110,6 +3170,124 @@
             </div>
         </div>
 
+        <!-- Adiz AI deck (from Downloads export) — place ad1.jpg–ad5.jpg in /images/ -->
+        <div class="slide slide--adiz">
+            <div class="adiz-slide-canvas">
+                <div class="adiz-glow adiz-glow-pink" style="top: -300px; left: -300px;"></div>
+                <div class="adiz-text-col">
+                    <div class="adiz-brandline" role="group" aria-label="Adiz AI Clothes Changer">
+                        <img class="adiz-brandline-logo" src="images/adiz-mark.png" alt="Adiz logo" width="140" height="84" decoding="async">
+                        <span class="adiz-brandline-text">AI Clothes Changer - Adiz</span>
+                    </div>
+                    <h2 class="adiz-title">Adiz: Your <br><span class="adiz-highlight">AI Fashion Studio</span> In Pocket.</h2>
+                    <p class="adiz-lede">Change your outfits in any photo instantly with advanced AI. No more expensive photoshoots or dressing rooms.</p>
+                </div>
+                <div class="adiz-mockup-col">
+                    <div class="adiz-badge adiz-badge--instant">
+                        <i class="fas fa-tshirt" aria-hidden="true"></i>
+                        <div><h4>Instant</h4><p>Swap</p></div>
+                    </div>
+                    <div class="adiz-phone"><img src="file:///Users/yudizsolutionsltd/.cursor/projects/Users-yudizsolutionsltd-Documents-SKUShot-PPT/assets/223022-377016e4-7664-40c4-81d0-5e29a27468ba.png" alt="Adiz app home screen"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide slide--adiz">
+            <div class="adiz-slide-canvas">
+                <div class="adiz-glow adiz-glow-pink" style="top: -100px; right: -100px;"></div>
+                <div class="adiz-text-col">
+                    <div class="adiz-kicker">Variety for All</div>
+                    <h2 class="adiz-title">Clothges for <br><span class="adiz-highlight">Every Occasion.</span></h2>
+                    <p class="adiz-lede">Whether it's Men's formals, Women's ethnic, or Kids' trendy styles—Adiz AI covers 3000+ unique looks.</p>
+                </div>
+                <div class="adiz-mockup-col">
+                    <div class="adiz-badge adiz-badge--styles">
+                        <i class="fas fa-users" aria-hidden="true"></i>
+                        <div><h4>3000+</h4><p>AI Styles</p></div>
+                    </div>
+                    <div class="adiz-phone adiz-interactive-phone" id="adizInteractivePhone">
+                        <!-- <p class="adiz-int-title">Template Studio</p> -->
+                        <div class="adiz-preview-box">
+                            <div class="adiz-preview-placeholder" id="adizPreviewPlaceholder">
+                                <i class="fas fa-image" aria-hidden="true"></i>
+                                <span>Select Image to Generate</span>
+                            </div>
+                            <div class="adiz-preview-image" id="adizPreviewImage">
+                                <img src="images/adiz-selected-person.png" alt="Selected person image for outfit templates" loading="lazy" decoding="async">
+                                <span class="adiz-preview-badge" id="adizPreviewBadge">IMAGE SELECTED</span>
+                            </div>
+                            <div class="adiz-generating-overlay" id="adizGeneratingOverlay" aria-hidden="true">
+                                <div class="adiz-generating-stars" aria-hidden="true"></div>
+                                <div class="adiz-generating-ring" aria-hidden="true"></div>
+                                <div class="adiz-generating-scan" aria-hidden="true"></div>
+                                <span class="adiz-generating-text">
+                                    Generating image
+                                    <span class="adiz-gen-dots" aria-hidden="true">
+                                        <span class="adiz-gen-dot"></span>
+                                        <span class="adiz-gen-dot"></span>
+                                        <span class="adiz-gen-dot"></span>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                        <button type="button" class="adiz-select-btn" id="adizSelectImageBtn">
+                            <i class="fas fa-images" aria-hidden="true"></i>
+                            Select Image
+                        </button>
+                        <div class="adiz-template-list" id="adizTemplateList" aria-label="Template selection">
+                            <button type="button" class="adiz-template-chip" data-template="formal" data-result-src="images/adiz-result-formal.png">
+                                <img src="images/adiz-template-formal.png" alt="Formal look template" loading="lazy" decoding="async">
+                                <span>Formal</span>
+                            </button>
+                            <button type="button" class="adiz-template-chip" data-template="statement" data-result-src="images/adiz-result-statement.png">
+                                <img src="images/adiz-template-statement.png" alt="Statement look template" loading="lazy" decoding="async">
+                                <span>Statement</span>
+                            </button>
+                            <button type="button" class="adiz-template-chip" data-template="summer" data-result-src="images/adiz-result-summer.png">
+                                <img src="images/adiz-template-summer.png" alt="Summer look template" loading="lazy" decoding="async">
+                                <span>Summer</span>
+                            </button>
+                        </div>
+                        <button type="button" class="adiz-generate-btn" id="adizGenerateBtn">
+                            <span class="adiz-slide-knob" aria-hidden="true"><i class="fas fa-angles-right" aria-hidden="true"></i></span>
+                            <span class="adiz-slide-label">Slide to Generate</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide slide--adiz">
+            <div class="adiz-slide-canvas adiz-slide-canvas--cta">
+                <div class="adiz-text-col adiz-text-col--cta">
+                    <div class="adiz-cta-logo-wrap">
+                        <img class="adiz-cta-logo" src="images/adiz-logo-cta.png" alt="Adiz logo" loading="lazy" decoding="async">
+                    </div>
+                    
+                    <h2 class="adiz-title adiz-title--mega">Update Your <span class="adiz-highlight">Style</span></h2>
+                    <p class="adiz-lede" style="margin-left: auto; margin-right: auto;">Transform your outfits in seconds with Adiz App.</p>
+                    <div class="adiz-cta-row">
+                        <div class="adiz-store-stack">
+                            <div class="adiz-badge adiz-badge--static">
+                                <i class="fab fa-apple" aria-hidden="true"></i>
+                                <div><h4>App Store</h4><p>Download</p></div>
+                            </div>
+                            <div class="adiz-badge adiz-badge--static" style="margin-bottom: 0;">
+                                <i class="fab fa-google-play" aria-hidden="true"></i>
+                                <div><h4>Play Store</h4><p>Download</p></div>
+                            </div>
+                        </div>
+                        <div class="adiz-qr-placeholder">
+                            <div class="adiz-qr-inner">
+                                <img class="adiz-qr-image" src="images/adiz-qr-code.png" alt="Adiz QR code" loading="lazy" decoding="async">
+                                <p class="adiz-qr-caption">Scan to download the app</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
     </div>
     </div>
@@ -2195,6 +3373,7 @@
             if (e.target.closest('.slide-02-ai-phone-outer')) return;
             if (e.target.closest('.slide-09-brand-outer')) return;
             if (e.target.closest('.slide-12-mp-outer')) return;
+            if (e.target.closest('.adiz-interactive-phone')) return;
             next();
         });
 
@@ -2273,6 +3452,118 @@
             btnExport.addEventListener('click', (e) => {
                 e.stopPropagation();
                 phone.classList.remove('active-sync');
+            });
+        })();
+
+        (function initAdizInteractivePhone() {
+            const phone = document.getElementById('adizInteractivePhone');
+            const selectBtn = document.getElementById('adizSelectImageBtn');
+            const templateList = document.getElementById('adizTemplateList');
+            const generateBtn = document.getElementById('adizGenerateBtn');
+            const genOverlay = document.getElementById('adizGeneratingOverlay');
+            const previewBadge = document.getElementById('adizPreviewBadge');
+            const previewImg = phone ? phone.querySelector('#adizPreviewImage img') : null;
+            if (!phone || !selectBtn || !templateList || !generateBtn || !previewImg) return;
+            const SELECTED_LABEL = '<i class="fas fa-check-circle" aria-hidden="true"></i> Image Selected';
+            const GENERATE_LABEL = '<span class="adiz-slide-knob" aria-hidden="true"><i class="fas fa-angles-right" aria-hidden="true"></i></span><span class="adiz-slide-label">Slide to Generate</span>';
+            const GENERATED_LABEL = '<span class="adiz-slide-knob" aria-hidden="true"><i class="fas fa-check" aria-hidden="true"></i></span><span class="adiz-slide-label">Generated</span>';
+            const BADGE_SELECTED = 'IMAGE SELECTED';
+            const BADGE_GENERATING = 'GENERATING…';
+            const GENERATE_MS = 3600;
+            const personPreviewSrc = 'images/adiz-selected-person.png';
+            let hasGeneratedOnce = false;
+
+            const resetGeneratedState = () => {
+                phone.classList.remove('generated');
+                generateBtn.innerHTML = GENERATE_LABEL;
+            };
+
+            const showBasePreview = () => {
+                previewImg.src = personPreviewSrc;
+                previewImg.style.filter = 'none';
+                previewImg.classList.remove('adiz-result-reveal');
+            };
+
+            const showResultInstant = (resultSrc) => {
+                if (!resultSrc) return;
+                phone.classList.remove('is-generating');
+                if (genOverlay) genOverlay.setAttribute('aria-hidden', 'true');
+                previewImg.src = resultSrc;
+                previewImg.classList.remove('adiz-result-reveal');
+                void previewImg.offsetWidth;
+                previewImg.classList.add('adiz-result-reveal');
+                phone.classList.add('generated');
+                generateBtn.innerHTML = GENERATED_LABEL;
+                if (previewBadge) previewBadge.textContent = BADGE_SELECTED;
+            };
+
+            selectBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                phone.classList.add('has-selection');
+                selectBtn.innerHTML = SELECTED_LABEL;
+                resetGeneratedState();
+                showBasePreview();
+                if (previewBadge) previewBadge.textContent = BADGE_SELECTED;
+            });
+
+            templateList.addEventListener('click', (e) => {
+                const chip = e.target.closest('.adiz-template-chip');
+                if (!chip) return;
+                e.stopPropagation();
+                phone.classList.add('has-selection');
+                selectBtn.innerHTML = SELECTED_LABEL;
+                templateList.querySelectorAll('.adiz-template-chip').forEach((item) => {
+                    item.classList.toggle('is-active', item === chip);
+                });
+                const resultSrc = chip.getAttribute('data-result-src');
+
+                if (hasGeneratedOnce) {
+                    if (resultSrc) {
+                        previewImg.src = resultSrc;
+                    }
+                    previewImg.classList.remove('adiz-result-reveal');
+                    phone.classList.add('generated');
+                    generateBtn.innerHTML = GENERATED_LABEL;
+                    if (previewBadge) previewBadge.textContent = BADGE_SELECTED;
+                    return;
+                }
+
+                resetGeneratedState();
+                showBasePreview();
+                if (previewBadge) previewBadge.textContent = BADGE_SELECTED;
+            });
+
+            generateBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (phone.classList.contains('is-generating')) return;
+                if (!phone.classList.contains('has-selection')) {
+                    phone.classList.add('has-selection');
+                }
+                const chip = templateList.querySelector('.adiz-template-chip.is-active');
+                const resultSrc = chip && chip.getAttribute('data-result-src');
+                if (!resultSrc) return;
+
+                if (hasGeneratedOnce) {
+                    showResultInstant(resultSrc);
+                    return;
+                }
+
+                phone.classList.add('is-generating');
+                if (genOverlay) genOverlay.setAttribute('aria-hidden', 'false');
+                if (previewBadge) previewBadge.textContent = BADGE_GENERATING;
+
+                window.setTimeout(() => {
+                    phone.classList.remove('is-generating');
+                    if (genOverlay) genOverlay.setAttribute('aria-hidden', 'true');
+                    previewImg.src = resultSrc;
+                    previewImg.classList.remove('adiz-result-reveal');
+                    void previewImg.offsetWidth;
+                    previewImg.classList.add('adiz-result-reveal');
+                    phone.classList.add('generated');
+                    generateBtn.innerHTML = GENERATED_LABEL;
+                    hasGeneratedOnce = true;
+                    if (previewBadge) previewBadge.textContent = BADGE_SELECTED;
+                }, GENERATE_MS);
             });
         })();
     </script>
