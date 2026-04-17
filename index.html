@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SkuShot - Presentation</title>
-    <link rel="icon" type="image/png" href="images/image.png">
-    <link rel="apple-touch-icon" href="images/image.png">
+    <link rel="icon" type="image/png" href="images/image%20224.png">
+    <link rel="apple-touch-icon" href="images/image%20224.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     
@@ -1922,6 +1922,36 @@
             font-size: clamp(9px, 1.05cqw, 17px);
             margin-top: 2px;
         }
+        @keyframes adiz-interior-float {
+            0%, 100% {
+                transform: translateX(calc(-100% + 34px)) translateY(0);
+                box-shadow: 0 14px 30px rgba(0, 0, 0, 0.42);
+            }
+            50% {
+                transform: translateX(calc(-100% + 34px)) translateY(-7px);
+                box-shadow: 0 22px 40px rgba(0, 0, 0, 0.55);
+            }
+        }
+        .slide--adiz .adiz-badge--interior {
+            top: 21%;
+            left: calc(50% - min(205px, 17.5cqw));
+            transform: translateX(calc(-100% + 34px));
+            animation: adiz-interior-float 2.9s ease-in-out infinite;
+            border: none;
+            border-radius: clamp(12px, 2.2cqw, 18px);
+            background: linear-gradient(90deg, #ff6b52 0%, #ff2d73 100%);
+            padding: clamp(10px, 1.1cqw, 16px) clamp(18px, 1.9cqw, 28px);
+            min-width: auto;
+            box-shadow: 0 16px 34px rgba(0, 0, 0, 0.45);
+        }
+        .slide--adiz .adiz-badge--interior span {
+            color: #fff;
+            font-size: clamp(13px, 1.3cqw, 20px);
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            line-height: 1;
+        }
         .slide--adiz .adiz-badge--styles {
             top: 17%;
             left: clamp(-86px, -5.1cqw, -24px);
@@ -1954,6 +1984,10 @@
                 animation: none;
                 transform: translateX(calc(-100% - 6px));
             }
+            .slide--adiz .adiz-badge--interior {
+                animation: none;
+                transform: translateX(calc(-100% + 34px));
+            }
             .slide--adiz .adiz-badge--styles {
                 animation: none;
             }
@@ -1983,6 +2017,10 @@
             height: 100%;
             object-fit: cover;
             display: block;
+        }
+        .slide--adiz .adiz-phone--spaces img {
+            object-fit: contain;
+            background: #090b10;
         }
         .slide--adiz .adiz-interactive-phone {
             position: relative;
@@ -2126,6 +2164,34 @@
             grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: clamp(8px, 1cqw, 12px);
             align-items: stretch;
+        }
+        .slide--adiz .adiz-template-list.adiz-template-list--showcase {
+            display: block;
+        }
+        .slide--adiz .adiz-template-showcase-wrap {
+            position: relative;
+            width: 100%;
+        }
+        .slide--adiz .adiz-template-showcase-image {
+            width: 100%;
+            display: block;
+            border-radius: 18px;
+        }
+        .slide--adiz .adiz-template-selected-ring {
+            position: absolute;
+            width: 27%;
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+            left: 5%;
+            /* right: 3.8%; */
+            top: 6.2%;
+            border: 2.5px solid rgba(255, 56, 116, 0.98);
+            box-shadow:
+                0 0 0 2px rgba(255, 255, 255, 0.78),
+                0 0 0 4px rgba(255, 45, 85, 0.2),
+                0 0 14px rgba(255, 45, 85, 0.35);
+            pointer-events: none;
+            transform: rotate(-12deg);
         }
         .slide--adiz .adiz-template-chip {
             position: relative;
@@ -2957,6 +3023,11 @@
                 top: 15%;
                 left: calc(50% - min(190px, 44vw));
             }
+            .slide--adiz .adiz-badge--interior {
+                top: 15%;
+                left: calc(50% - min(190px, 44vw));
+                transform: translateX(calc(-100% + 18px));
+            }
             .slide--adiz .adiz-badge--styles {
                 left: clamp(-18px, -1.2vw, -6px);
             }
@@ -2982,7 +3053,7 @@
             <div class="glow" style="width: 800px; height: 800px; background: var(--gold); top: -200px; left: -100px;"></div>
             <div class="text-content">
                 <div class="brand-logo-badge">
-                    <img src="images/image.png" alt="SkuShot logo">
+                    <img src="images/image%20224.png" alt="SkuShot logo">
                     <span>SKUShot</span>
                 </div>
                 <h1 class="main-heading slide-hero-heading">
@@ -3317,7 +3388,7 @@
         <div class="slide slide--final-cta">
             <div class="slide-final-inner">
                 <div class="brand-logo-badge brand-logo-badge--final">
-                    <img src="images/image.png" alt="SkuShot logo" width="48" height="48">
+                    <img src="images/image%20224.png" alt="SkuShot logo" width="48" height="48">
                     <span>SKUShot</span>
                 </div>
                 <h1 class="main-heading slide-cta-heading">Scale Your <span class="highlight">Brand</span></h1>
@@ -3332,7 +3403,7 @@
                 </div>
             </div>
         </div>
-
+<!-- slide - 11 -->
         <!-- Adiz AI deck (from Downloads export) — place ad1.jpg–ad5.jpg in /images/ -->
         <div class="slide slide--adiz">
             <div class="adiz-slide-canvas">
@@ -3354,7 +3425,7 @@
                 </div>
             </div>
         </div>
-
+<!-- slide - 12 -->
         <div class="slide slide--adiz">
             <div class="adiz-slide-canvas">
                 <div class="adiz-glow adiz-glow-pink" style="top: -100px; right: -100px;"></div>
@@ -3419,7 +3490,7 @@
                 </div>
             </div>
         </div>
-
+<!-- slide - 13 -->
         <div class="slide slide--adiz">
             <div class="adiz-slide-canvas adiz-slide-canvas--cta">
                 <div class="adiz-text-col adiz-text-col--cta">
@@ -3451,6 +3522,117 @@
             </div>
         </div>
 
+        <!-- Adiz Spaces Slide -->
+<!-- slide - 14 -->
+        <div class="slide slide--adiz">
+            <div class="adiz-slide-canvas">
+                <div class="adiz-glow adiz-glow-pink" style="top: -300px; left: -300px;"></div>
+                <div class="adiz-text-col">
+                    <div class="adiz-brandline" role="group" aria-label="AI-Powered Interiors">
+                        <img class="adiz-brandline-logo" src="images/spaces-logo.png" alt="Adiz spaces logo" width="140" height="84" decoding="async">
+                        <span class="adiz-brandline-text">AI-Powered Interiors - Adiz Spaces</span>
+                    </div>
+                    <h2 class="adiz-title">Your Home,<br>Designed <span class="adiz-highlight">By You.</span></h2>
+                    <p class="adiz-lede">Transform your living room or bedroom into a professional masterpiece with AI suggestions. Just capture and create.</p>
+                </div>
+                <div class="adiz-mockup-col">
+                    <div class="adiz-badge adiz-badge--interior">
+                        <span>AI INTERIOR</span>
+                    </div>
+                    <div class="adiz-phone adiz-phone--spaces"><img src="/Users/yudizsolutionsltd/.cursor/projects/Users-yudizsolutionsltd-Documents-SKUShot-PPT/assets/image-614aa6a3-de56-4728-a5bc-b983c4ec240f.png" alt="Adiz Spaces app home screen"></div>
+                </div>
+            </div>
+        </div>
+<!-- slide - 15 -->
+<div class="slide slide--adiz">
+    <div class="adiz-slide-canvas">
+        <div class="adiz-glow adiz-glow-pink" style="top: -100px; right: -100px;"></div>
+        <div class="adiz-text-col">
+            <div class="adiz-kicker">SCAN &amp; TRANSFORM</div>
+            <h2 class="adiz-title">Unleash AI <br><span class="adiz-highlight">Creativity.</span></h2>
+            <p class="adiz-lede">Upload a photo of your current room and watch the magic happen. Experience Baroque, Bohemian, or Modern styles in seconds.</p>
+        </div>
+        <div class="adiz-mockup-col">
+            <div class="adiz-badge adiz-badge--styles">
+                <i class="fas fa-users" aria-hidden="true"></i>
+                <div><h4>3000+</h4><p>AI Styles</p></div>
+            </div>
+            <div class="adiz-phone adiz-interactive-phone has-selection" id="adizInteractivePhone" data-result-src="images/slide15-redesign-result.png">
+                <!-- <p class="adiz-int-title">Template Studio</p> -->
+                <div class="adiz-preview-box">
+                    <div class="adiz-preview-placeholder" id="adizPreviewPlaceholder">
+                        <i class="fas fa-image" aria-hidden="true"></i>
+                        <span>Upload Room Photo</span>
+                    </div>
+                    <div class="adiz-preview-image" id="adizPreviewImage">
+                        <img src="images/simple-room.png" alt="Selected room image for redesign" loading="lazy" decoding="async">
+                        <span class="adiz-preview-badge adiz-spaces-preview-badge" id="adizPreviewBadge">IMAGE SELECTED</span>
+                    </div>
+                    <div class="adiz-generating-overlay" id="adizGeneratingOverlay" aria-hidden="true">
+                        <div class="adiz-generating-stars" aria-hidden="true"></div>
+                        <div class="adiz-generating-ring" aria-hidden="true"></div>
+                        <div class="adiz-generating-scan" aria-hidden="true"></div>
+                        <span class="adiz-generating-text">
+                            Generating image
+                            <span class="adiz-gen-dots" aria-hidden="true">
+                                <span class="adiz-gen-dot"></span>
+                                <span class="adiz-gen-dot"></span>
+                                <span class="adiz-gen-dot"></span>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+                <button type="button" class="adiz-select-btn" id="adizSelectImageBtn">
+                    <i class="fas fa-images" aria-hidden="true"></i>
+                    Upload Photo
+                </button>
+                <div class="adiz-template-list adiz-template-list--showcase" id="adizTemplateList" aria-label="Room style options">
+                    <div class="adiz-template-showcase-wrap">
+                        <img class="adiz-template-showcase-image" src="/Users/yudizsolutionsltd/.cursor/projects/Users-yudizsolutionsltd-Documents-SKUShot-PPT/assets/image-6beb1041-48a5-43b3-9953-1867d11db3da.png" alt="Room styles showcase" loading="lazy" decoding="async">
+                        <span class="adiz-template-selected-ring" aria-hidden="true"></span>
+                    </div>
+                </div>
+                <button type="button" class="adiz-generate-btn" id="adizGenerateBtn">
+                    <span class="adiz-slide-knob" aria-hidden="true"><i class="fas fa-angles-right" aria-hidden="true"></i></span>
+                    <span class="adiz-slide-label">RE-DESIGN NOW</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- slide - 16 -->
+        <div class="slide slide--adiz">
+            <div class="adiz-slide-canvas adiz-slide-canvas--cta">
+                <div class="adiz-text-col adiz-text-col--cta">
+                    <div class="adiz-cta-logo-wrap">
+                        <!-- add name  -->
+                        <img class="adiz-cta-logo" src="images/spaces-logo.png"  alt="Adiz Spaces logo" loading="lazy" decoding="async">
+                    </div>
+                    
+                    <h2 class="adiz-title adiz-title--mega">Your <span class="adiz-highlight">Perfect Room Is</span><br>Seconds Away.</h2>
+                    <p class="adiz-lede" style="margin-left: auto; margin-right: auto;">Download Adiz Spaces today and start designing your dream space.</p>
+                    <div class="adiz-cta-row">
+                        <div class="adiz-store-stack">
+                            <div class="adiz-badge adiz-badge--static">
+                                <i class="fab fa-apple" aria-hidden="true"></i>
+                                <div><h4>App Store</h4><p>Download</p></div>
+                            </div>
+                            <div class="adiz-badge adiz-badge--static" style="margin-bottom: 0;">
+                                <i class="fab fa-google-play" aria-hidden="true"></i>
+                                <div><h4>Play Store</h4><p>Download</p></div>
+                            </div>
+                        </div>
+                        <div class="adiz-qr-placeholder">
+                            <div class="adiz-qr-inner">
+                                <img class="adiz-qr-image" src="images/Adiz Spaces-qr.png" alt="Adiz QR code" loading="lazy" decoding="async">
+                                <p class="adiz-qr-caption">Scan to download the app</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- slide - 17 -->
         <div class="slide slide--thanks">
             <div class="thanks-mandala"></div>
             <div class="thanks-glow-sku"></div>
@@ -3461,13 +3643,18 @@
                 <p class="thanks-sub">Empowering Business &amp; Fashion</p>
                 <div class="thanks-brand-row">
                     <div class="thanks-brand-card sku-brand-card">
-                        <img class="thanks-brand-logo" src="images/image.png" alt="SkuShot logo" loading="lazy" decoding="async">
-                        <h3>SkuShot <span>AI</span></h3>
+                        <img class="thanks-brand-logo" src="images/image%20224.png" alt="SkuShot logo" loading="lazy" decoding="async">
+                        <h3>SkuShot</h3>
                     </div>
-                    <div class="thanks-amp">&amp;</div>
+                    <div class="thanks-amp"></div>
                     <div class="thanks-brand-card adiz-brand-card">
                         <img class="thanks-brand-logo" src="images/adiz-logo-thanks.png" alt="Adiz logo" loading="lazy" decoding="async">
-                        <h3>Adiz <span>AI</span></h3>
+                        <h3>Adiz</h3>
+                    </div>
+                    <div class="thanks-amp"></div>
+                    <div class="thanks-brand-card adiz-brand-card">
+                        <img class="thanks-brand-logo" src="images/spaces-logo.png" alt="Adiz Spaces logo" loading="lazy" decoding="async">
+                        <h3>Adiz <span>Spaces</span></h3>
                     </div>
                 </div>
                 <div class="thanks-contact-row">
@@ -3645,103 +3832,51 @@
         })();
 
         (function initAdizInteractivePhone() {
-            const phone = document.getElementById('adizInteractivePhone');
-            const selectBtn = document.getElementById('adizSelectImageBtn');
-            const templateList = document.getElementById('adizTemplateList');
-            const generateBtn = document.getElementById('adizGenerateBtn');
-            const genOverlay = document.getElementById('adizGeneratingOverlay');
-            const previewBadge = document.getElementById('adizPreviewBadge');
-            const previewImg = phone ? phone.querySelector('#adizPreviewImage img') : null;
-            if (!phone || !selectBtn || !templateList || !generateBtn || !previewImg) return;
+            const phones = document.querySelectorAll('.adiz-interactive-phone');
+            if (!phones.length) return;
+
             const SELECTED_LABEL = '<i class="fas fa-check-circle" aria-hidden="true"></i> Image Selected';
-            const GENERATE_LABEL = '<span class="adiz-slide-knob" aria-hidden="true"><i class="fas fa-angles-right" aria-hidden="true"></i></span><span class="adiz-slide-label">Slide to Generate</span>';
             const GENERATED_LABEL = '<span class="adiz-slide-knob" aria-hidden="true"><i class="fas fa-check" aria-hidden="true"></i></span><span class="adiz-slide-label">Generated</span>';
             const BADGE_SELECTED = 'IMAGE SELECTED';
             const BADGE_GENERATING = 'GENERATING…';
             const GENERATE_MS = 3600;
-            const personPreviewSrc = 'images/adiz-selected-person.png';
-            let hasGeneratedOnce = false;
 
-            const resetGeneratedState = () => {
-                phone.classList.remove('generated');
-                generateBtn.innerHTML = GENERATE_LABEL;
-            };
+            phones.forEach((phone) => {
+                const selectBtn = phone.querySelector('#adizSelectImageBtn');
+                const templateList = phone.querySelector('#adizTemplateList');
+                const generateBtn = phone.querySelector('#adizGenerateBtn');
+                const genOverlay = phone.querySelector('#adizGeneratingOverlay');
+                const previewBadge = phone.querySelector('#adizPreviewBadge');
+                const previewImg = phone.querySelector('#adizPreviewImage img');
+                if (!selectBtn || !templateList || !generateBtn || !previewImg) return;
 
-            const showBasePreview = () => {
-                previewImg.src = personPreviewSrc;
-                previewImg.style.filter = 'none';
-                previewImg.classList.remove('adiz-result-reveal');
-            };
+                const defaultGenerateLabel = generateBtn.innerHTML;
+                const basePreviewSrc = previewImg.getAttribute('src') || '';
+                let hasGeneratedOnce = false;
 
-            const showResultInstant = (resultSrc) => {
-                if (!resultSrc) return;
-                phone.classList.remove('is-generating');
-                if (genOverlay) genOverlay.setAttribute('aria-hidden', 'true');
-                previewImg.src = resultSrc;
-                previewImg.classList.remove('adiz-result-reveal');
-                void previewImg.offsetWidth;
-                previewImg.classList.add('adiz-result-reveal');
-                phone.classList.add('generated');
-                generateBtn.innerHTML = GENERATED_LABEL;
-                if (previewBadge) previewBadge.textContent = BADGE_SELECTED;
-            };
+                const resetGeneratedState = () => {
+                    phone.classList.remove('generated');
+                    generateBtn.innerHTML = defaultGenerateLabel;
+                };
 
-            selectBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                phone.classList.add('has-selection');
-                selectBtn.innerHTML = SELECTED_LABEL;
-                resetGeneratedState();
-                showBasePreview();
-                if (previewBadge) previewBadge.textContent = BADGE_SELECTED;
-            });
-
-            templateList.addEventListener('click', (e) => {
-                const chip = e.target.closest('.adiz-template-chip');
-                if (!chip) return;
-                e.stopPropagation();
-                phone.classList.add('has-selection');
-                selectBtn.innerHTML = SELECTED_LABEL;
-                templateList.querySelectorAll('.adiz-template-chip').forEach((item) => {
-                    item.classList.toggle('is-active', item === chip);
-                });
-                const resultSrc = chip.getAttribute('data-result-src');
-
-                if (hasGeneratedOnce) {
-                    if (resultSrc) {
-                        previewImg.src = resultSrc;
-                    }
+                const showBasePreview = () => {
+                    previewImg.src = basePreviewSrc;
+                    previewImg.style.filter = 'none';
                     previewImg.classList.remove('adiz-result-reveal');
-                    phone.classList.add('generated');
-                    generateBtn.innerHTML = GENERATED_LABEL;
-                    if (previewBadge) previewBadge.textContent = BADGE_SELECTED;
-                    return;
-                }
+                };
 
-                resetGeneratedState();
-                showBasePreview();
-                if (previewBadge) previewBadge.textContent = BADGE_SELECTED;
-            });
+                const getResultSrc = () => {
+                    const activeChip = templateList.querySelector('.adiz-template-chip.is-active');
+                    return (
+                        (activeChip && activeChip.getAttribute('data-result-src')) ||
+                        phone.getAttribute('data-result-src') ||
+                        templateList.getAttribute('data-result-src') ||
+                        ''
+                    );
+                };
 
-            generateBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                if (phone.classList.contains('is-generating')) return;
-                if (!phone.classList.contains('has-selection')) {
-                    phone.classList.add('has-selection');
-                }
-                const chip = templateList.querySelector('.adiz-template-chip.is-active');
-                const resultSrc = chip && chip.getAttribute('data-result-src');
-                if (!resultSrc) return;
-
-                if (hasGeneratedOnce) {
-                    showResultInstant(resultSrc);
-                    return;
-                }
-
-                phone.classList.add('is-generating');
-                if (genOverlay) genOverlay.setAttribute('aria-hidden', 'false');
-                if (previewBadge) previewBadge.textContent = BADGE_GENERATING;
-
-                window.setTimeout(() => {
+                const showResultInstant = (resultSrc) => {
+                    if (!resultSrc) return;
                     phone.classList.remove('is-generating');
                     if (genOverlay) genOverlay.setAttribute('aria-hidden', 'true');
                     previewImg.src = resultSrc;
@@ -3750,9 +3885,75 @@
                     previewImg.classList.add('adiz-result-reveal');
                     phone.classList.add('generated');
                     generateBtn.innerHTML = GENERATED_LABEL;
-                    hasGeneratedOnce = true;
                     if (previewBadge) previewBadge.textContent = BADGE_SELECTED;
-                }, GENERATE_MS);
+                };
+
+                selectBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    phone.classList.add('has-selection');
+                    selectBtn.innerHTML = SELECTED_LABEL;
+                    resetGeneratedState();
+                    showBasePreview();
+                    if (previewBadge) previewBadge.textContent = BADGE_SELECTED;
+                });
+
+                templateList.addEventListener('click', (e) => {
+                    const chip = e.target.closest('.adiz-template-chip');
+                    if (!chip) return;
+                    e.stopPropagation();
+                    phone.classList.add('has-selection');
+                    selectBtn.innerHTML = SELECTED_LABEL;
+                    templateList.querySelectorAll('.adiz-template-chip').forEach((item) => {
+                        item.classList.toggle('is-active', item === chip);
+                    });
+                    const resultSrc = chip.getAttribute('data-result-src');
+
+                    if (hasGeneratedOnce) {
+                        if (resultSrc) previewImg.src = resultSrc;
+                        previewImg.classList.remove('adiz-result-reveal');
+                        phone.classList.add('generated');
+                        generateBtn.innerHTML = GENERATED_LABEL;
+                        if (previewBadge) previewBadge.textContent = BADGE_SELECTED;
+                        return;
+                    }
+
+                    resetGeneratedState();
+                    showBasePreview();
+                    if (previewBadge) previewBadge.textContent = BADGE_SELECTED;
+                });
+
+                generateBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (phone.classList.contains('is-generating')) return;
+                    if (!phone.classList.contains('has-selection')) {
+                        phone.classList.add('has-selection');
+                    }
+
+                    const resultSrc = getResultSrc();
+                    if (!resultSrc) return;
+
+                    if (hasGeneratedOnce) {
+                        showResultInstant(resultSrc);
+                        return;
+                    }
+
+                    phone.classList.add('is-generating');
+                    if (genOverlay) genOverlay.setAttribute('aria-hidden', 'false');
+                    if (previewBadge) previewBadge.textContent = BADGE_GENERATING;
+
+                    window.setTimeout(() => {
+                        phone.classList.remove('is-generating');
+                        if (genOverlay) genOverlay.setAttribute('aria-hidden', 'true');
+                        previewImg.src = resultSrc;
+                        previewImg.classList.remove('adiz-result-reveal');
+                        void previewImg.offsetWidth;
+                        previewImg.classList.add('adiz-result-reveal');
+                        phone.classList.add('generated');
+                        generateBtn.innerHTML = GENERATED_LABEL;
+                        hasGeneratedOnce = true;
+                        if (previewBadge) previewBadge.textContent = BADGE_SELECTED;
+                    }, GENERATE_MS);
+                });
             });
         })();
     </script>
