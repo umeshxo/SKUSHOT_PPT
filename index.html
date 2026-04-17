@@ -2168,6 +2168,62 @@
         .slide--adiz .adiz-template-list.adiz-template-list--showcase {
             display: block;
         }
+        .slide--adiz .adiz-template-list.adiz-template-list--spaces {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: clamp(8px, 0.9cqw, 12px);
+            align-items: start;
+            margin-top: clamp(4px, 0.6cqw, 8px);
+            padding-top: clamp(6px, 0.8cqw, 10px);
+        }
+        .slide--adiz .adiz-template-list.adiz-template-list--spaces .adiz-template-chip {
+            border: 0;
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            box-shadow: none;
+            transform: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .slide--adiz .adiz-template-list.adiz-template-list--spaces .adiz-template-chip::after {
+            content: none;
+        }
+        .slide--adiz .adiz-template-list.adiz-template-list--spaces .adiz-template-chip img {
+            width: clamp(66px, 5.8cqw, 94px);
+            height: clamp(66px, 5.8cqw, 94px);
+            border-radius: 999px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            object-fit: cover;
+            object-position: center;
+            margin-bottom: clamp(5px, 0.5cqw, 7px);
+            display: block;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .slide--adiz .adiz-template-list.adiz-template-list--spaces .adiz-template-chip span {
+            font-size: clamp(9px, 0.76cqw, 12px);
+            line-height: 1.2;
+            color: #eef2fb;
+            text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
+            padding-bottom: 2px;
+        }
+        .slide--adiz .adiz-template-list.adiz-template-list--spaces .adiz-template-chip:hover img,
+        .slide--adiz .adiz-template-list.adiz-template-list--spaces .adiz-template-chip:focus-visible img {
+            transform: scale(1.03);
+            border-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 14px rgba(255, 92, 146, 0.4);
+        }
+        .slide--adiz .adiz-template-list.adiz-template-list--spaces .adiz-template-chip.is-active img {
+            border-color: #ff2d55;
+            box-shadow:
+                0 0 0 2px rgba(255, 255, 255, 0.9),
+                0 0 0 4px rgba(255, 45, 85, 0.45),
+                0 0 14px rgba(255, 45, 85, 0.42);
+        }
+        .slide--adiz .adiz-template-list.adiz-template-list--spaces .adiz-template-chip.is-active span {
+            color: #ffffff;
+        }
         .slide--adiz .adiz-template-showcase-wrap {
             position: relative;
             width: 100%;
@@ -3553,19 +3609,19 @@
         </div>
         <div class="adiz-mockup-col">
             <div class="adiz-badge adiz-badge--styles">
-                <i class="fas fa-users" aria-hidden="true"></i>
+                <i class="fas fa-couch" aria-hidden="true"></i>
                 <div><h4>1000+</h4><p>AI Designs</p></div>
             </div>
             <div class="adiz-phone adiz-interactive-phone has-selection" id="adizInteractivePhone" data-result-src="images/slide15-redesign-result.png">
                 <!-- <p class="adiz-int-title">Template Studio</p> -->
                 <div class="adiz-preview-box">
-                    <div class="adiz-preview-placeholder" id="adizPreviewPlaceholder">
+                    <!-- <div class="adiz-preview-placeholder" id="adizPreviewPlaceholder">
                         <i class="fas fa-image" aria-hidden="true"></i>
                         <span>Upload Room Photo</span>
-                    </div>
+                    </div> -->
                     <div class="adiz-preview-image" id="adizPreviewImage">
                         <img src="images/simple-room.png" alt="Selected room image for redesign" loading="lazy" decoding="async">
-                        <span class="adiz-preview-badge adiz-spaces-preview-badge" id="adizPreviewBadge">IMAGE SELECTED</span>
+                        <!-- <span class="adiz-preview-badge adiz-spaces-preview-badge" id="adizPreviewBadge">IMAGE SELECTED</span> -->
                     </div>
                     <div class="adiz-generating-overlay" id="adizGeneratingOverlay" aria-hidden="true">
                         <div class="adiz-generating-stars" aria-hidden="true"></div>
@@ -3581,15 +3637,19 @@
                         </span>
                     </div>
                 </div>
-                <button type="button" class="adiz-select-btn" id="adizSelectImageBtn">
-                    <i class="fas fa-images" aria-hidden="true"></i>
-                    Upload Photo
-                </button>
-                <div class="adiz-template-list adiz-template-list--showcase" id="adizTemplateList" aria-label="Room style options">
-                    <div class="adiz-template-showcase-wrap">
-                        <img class="adiz-template-showcase-image" src="images/style-spaces.png" alt="Room styles showcase" loading="lazy" decoding="async">
-                        <span class="adiz-template-selected-ring" aria-hidden="true"></span>
-                    </div>
+                <div class="adiz-template-list adiz-template-list--spaces" id="adizTemplateList" aria-label="Room style options">
+                    <button type="button" class="adiz-template-chip is-active" data-template="airbnb" data-result-src="images/slide15-redesign-result.png">
+                        <img src="images/slide15-redesign-result.png" alt="Airbnb style room" loading="lazy" decoding="async">
+                        <span>Airbnb<br>Style</span>
+                    </button>
+                    <button type="button" class="adiz-template-chip" data-template="baroque" data-result-src="images/second-space-image.webp">
+                        <img src="images/second-space-image.webp" alt="Baroque style room" loading="lazy" decoding="async">
+                        <span>Baroque<br>Style</span>
+                    </button>
+                    <button type="button" class="adiz-template-chip" data-template="biophilic" data-result-src="images/third-space-image.webp">
+                        <img src="images/third-space-image.webp" alt="Biophilic design room" loading="lazy" decoding="async">
+                        <span>Biophilic<br>Design</span>
+                    </button>
                 </div>
                 <button type="button" class="adiz-generate-btn" id="adizGenerateBtn">
                     <span class="adiz-slide-knob" aria-hidden="true"><i class="fas fa-angles-right" aria-hidden="true"></i></span>
@@ -3847,7 +3907,7 @@
                 const genOverlay = phone.querySelector('#adizGeneratingOverlay');
                 const previewBadge = phone.querySelector('#adizPreviewBadge');
                 const previewImg = phone.querySelector('#adizPreviewImage img');
-                if (!selectBtn || !templateList || !generateBtn || !previewImg) return;
+                if (!templateList || !generateBtn || !previewImg) return;
 
                 const defaultGenerateLabel = generateBtn.innerHTML;
                 const basePreviewSrc = previewImg.getAttribute('src') || '';
@@ -3887,21 +3947,23 @@
                     if (previewBadge) previewBadge.textContent = BADGE_SELECTED;
                 };
 
-                selectBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    phone.classList.add('has-selection');
-                    selectBtn.innerHTML = SELECTED_LABEL;
-                    resetGeneratedState();
-                    showBasePreview();
-                    if (previewBadge) previewBadge.textContent = BADGE_SELECTED;
-                });
+                if (selectBtn) {
+                    selectBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        phone.classList.add('has-selection');
+                        selectBtn.innerHTML = SELECTED_LABEL;
+                        resetGeneratedState();
+                        showBasePreview();
+                        if (previewBadge) previewBadge.textContent = BADGE_SELECTED;
+                    });
+                }
 
                 templateList.addEventListener('click', (e) => {
                     const chip = e.target.closest('.adiz-template-chip');
                     if (!chip) return;
                     e.stopPropagation();
                     phone.classList.add('has-selection');
-                    selectBtn.innerHTML = SELECTED_LABEL;
+                    if (selectBtn) selectBtn.innerHTML = SELECTED_LABEL;
                     templateList.querySelectorAll('.adiz-template-chip').forEach((item) => {
                         item.classList.toggle('is-active', item === chip);
                     });
